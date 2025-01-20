@@ -1,4 +1,4 @@
-#Cosmic Survivor
+Cosmic Survivor
 
 A 2D platformer game inspired by Broforce, Terraria, Mario and Hollow Knight
 
