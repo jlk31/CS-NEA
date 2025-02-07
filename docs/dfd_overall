@@ -22,7 +22,7 @@
         <mxCell id="hTeDECNKR30qfulJ95Zf-3" value="Quit Game" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
           <mxGeometry x="90" y="210" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="hTeDECNKR30qfulJ95Zf-5" value="" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
+        <mxCell id="hTeDECNKR30qfulJ95Zf-5" value="Revision" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
           <mxGeometry x="750" y="210" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
