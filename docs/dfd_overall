@@ -120,6 +120,12 @@
         <mxCell id="hTeDECNKR30qfulJ95Zf-43" value="Player kills all enemies and makes contact with right side of screen" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
           <mxGeometry x="440" y="910" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-54" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hTeDECNKR30qfulJ95Zf-49" target="hTeDECNKR30qfulJ95Zf-52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-56" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hTeDECNKR30qfulJ95Zf-49" target="hTeDECNKR30qfulJ95Zf-53">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-49" value="Random revision question prompted" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="120" y="680" width="120" height="60" as="geometry" />
         </mxCell>
