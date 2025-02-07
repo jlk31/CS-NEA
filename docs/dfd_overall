@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:134.0) Gecko/20100101 Firefox/134.0" version="26.0.11">
   <diagram name="Page-1" id="jP2mnXgaDkKuD82IVl4C">
-    <mxGraphModel dx="941" dy="671" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2110" dy="671" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -72,6 +72,9 @@
             <mxPoint x="360" y="520" as="targetPoint" />
           </mxGeometry>
         </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-50" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="hTeDECNKR30qfulJ95Zf-23" target="hTeDECNKR30qfulJ95Zf-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-23" value="Level 1 (from level editor) is loaded" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
           <mxGeometry x="440" y="490" width="120" height="60" as="geometry" />
         </mxCell>
@@ -85,6 +88,9 @@
           <mxGeometry x="440" y="630" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="hTeDECNKR30qfulJ95Zf-27" target="hTeDECNKR30qfulJ95Zf-43">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-51" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="hTeDECNKR30qfulJ95Zf-27" target="hTeDECNKR30qfulJ95Zf-49">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-27" value="Level 2 is loaded from level edtor " style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
@@ -113,6 +119,15 @@
         </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-43" value="Player kills all enemies and makes contact with right side of screen" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="1">
           <mxGeometry x="440" y="910" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-49" value="Random revision question prompted" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="120" y="680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-52" value="Player answers correctly" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-150" y="620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-53" value="Player does not answer correctly" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="-150" y="740" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
