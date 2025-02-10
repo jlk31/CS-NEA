@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:134.0) Gecko/20100101 Firefox/134.0" version="26.0.11">
   <diagram name="Page-1" id="jP2mnXgaDkKuD82IVl4C">
-    <mxGraphModel dx="2110" dy="671" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+    <mxGraphModel dx="2587" dy="796" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -128,6 +128,16 @@
         </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-49" value="Random revision question prompted" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="120" y="680" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="hTeDECNKR30qfulJ95Zf-57" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="hTeDECNKR30qfulJ95Zf-52" target="hTeDECNKR30qfulJ95Zf-35">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="-170" y="650" />
+              <mxPoint x="-170" y="1030" />
+              <mxPoint x="810" y="1030" />
+              <mxPoint x="810" y="660" />
+            </Array>
+          </mxGeometry>
         </mxCell>
         <mxCell id="hTeDECNKR30qfulJ95Zf-52" value="Player answers correctly" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="-150" y="620" width="120" height="60" as="geometry" />
