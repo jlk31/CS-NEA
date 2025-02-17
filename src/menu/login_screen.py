@@ -14,7 +14,7 @@ class LoginScreen:
         self.username_entry.pack()
 
         tk.Label(self.login_window, text = 'Password').pack()
-        self.password_entry = tk.Entry(self.login_window)
+        self.password_entry = tk.Entry(self.login_window, show = '*')
         self.password_entry.pack()
 
         self.login_button = tk.Button(self.login_window, text = 'Login', command = self.login)
