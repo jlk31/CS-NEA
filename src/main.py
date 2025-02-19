@@ -503,13 +503,11 @@ plasma_box_group.add(plasma_box)
 plasma_box = PlasmaBox('Plasma_grenade', 500, 260)
 plasma_box_group.add(plasma_box)
 
-
 player = Soldier('player', 200, 200, 1.65, 2, 20, 5)
 
 
 enemy = Soldier('enemy', 500, 200, 1.65, 2, 20, 0)
 enemy_soldier_group.add(enemy)
-
 
 x = 200
 y = 200
