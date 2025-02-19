@@ -38,7 +38,7 @@ ground_rock = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/gro
 platform = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/platform.png'), (100, 50))
 med_box = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/med_box.png'), (100, 50))
 laser_box = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/laser_box.png'), (100, 50))
-platform = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/platform.png'), (100, 50))
+plasma_grenade_box = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/plasma_grenade_box.png'), (100, 50))
 
 tiles = ['', moon_rock, ground_rock, platform]
 frames = []
