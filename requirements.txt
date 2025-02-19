@@ -9,4 +9,8 @@ This file lists all the Python packages that are required to run Cosmic-Survivor
 
 **Pygame**
 **SQLite3**
-**
+**sys**
+**os**
+**random**
+**time**
+**math**
