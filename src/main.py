@@ -317,7 +317,11 @@ class Level():
                     img_rect.x = x * tile_magnitude
                     img_rect.y = y * tile_magnitude
                     tile_data = (img, img_rect)
-                    self.level_data[y].append(tile)
+                    if tile >= 0 and tile <= 4:
+                        self.obstacle_list.append(tile_data)
+                    elif tile >= 5 and tile <= 6:
+                        plasma_box = PlasmaBox('Med', x * tile_magnitude, y * tile_magnitude)
+                        plasma_box_group.add(plasma_box)
 
 #================================================================================
 #plasma box class
