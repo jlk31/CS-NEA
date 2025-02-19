@@ -48,7 +48,7 @@ SCREEN_HEIGHT = int(SCREEN_WIDTH * 0.8)
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Combat Cosmonaut')
 #define game variables
-GRAVITYFORCE = 1.00
+GRAVITY_FORCE = 1.00
 TILE_MAGNITUDE = 50
 
 #================================================================================
@@ -102,105 +102,6 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 #================================================================================
 #display background image
-#================================================================================
-
-
-
-#================================================================================
-# main menu
-#================================================================================
-BG = pygame.image.load("assets/Background.png")
-
-
-
-def get_font(size): #returns Press-Start and the size
-    return pygame.font.Font("assets/font.ttf", size)
-
-
-
-def play():
-    player_render()
-
-
-
-def options():
-    while True:
-        REVISION_MOUSE_POS = pygame.mouse.get_pos() #gets position of the mouse
-
-
-        screen.blit(BG, (0, 0)) #turns screen black
-
-
-        REVISION_TEXT = get_font(45).render("This is the options window.", True, "White") #renders the options screen's text
-        REVISION_RECT = REVISION_TEXT.get_rect(center=(400, 320))
-        screen.blit(REVISION_TEXT, REVISION_RECT)
-
-        REVISION_BACK = Button(image=None, pos = (400, 420), text_input = "BACK", font = get_font(75), base_colour = "White", contact_colour = "Blue") #displays the back button
-        
-        REVISION_BACK.changeColor(REVISION_MOUSE_POS)
-        REVISION_BACK.update(screen)
-
-
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                if PLAY_BUTTON.is_clicked(REVISION_MOUSE_POS):
-                    play()
-                elif LEADERBOARD_BUTTON.is_clicked(REVISION_MOUSE_POS):
-                    leaderboard()
-                elif QUIT_BUTTON.is_clicked(REVISION_MOUSE_POS):
-                    pygame.quit()
-                    sys.exit()
-                elif REVISION_BACK.is_clicked(REVISION_MOUSE_POS):
-                    return
-                
-        pygame.display.update() #updates the display
-
-def main_menu():
-    while True:
-        screen.blit(BG, (0, 0)) #turns screen black
-
-
-        MENU_MOUSE_POS = pygame.mouse.get_pos() # gets position of mouse on screen
-
-
-        MENU_TEXT = get_font(100).render("Cosmic Survivor", True, "#000000") #main menu text
-        MENU_RECT = MENU_TEXT.get_rect(center=(400, 200)) #location of menu text onscreen
-
-
-        PLAY_BUTTON = Button(image = pygame.image.load("assets/ ---PLACEHOLDER---")), pos = (400, 200), text_input = "PLAY", font = get_font(75), base_colour = "White", contact_colour = "Blue" #draws the play button on screen
-        REVISION_BUTTON = Button(image = pygame.image.load("assets/ ---PLACEHOLDER---")), pos = (400, 200),  text_input = "REVISION", font = get_font(75), base_colour = "White", contact_colour = "Blue" # draws the revision button on screen
-        QUIT_BUTTON = Button(image = pygame.image.load("assets/ ---PLACEHOLDER---")), pos = (400, 200), text_input = "QUIT", font = get_font(75), base_colour = "White", contact_colour = "Blue" #draws the leaderboard button on screen
-        
-
-        screen.blit(MENU_TEXT, MENU_RECT)
-
-
-        for Button in [PLAY_BUTTON, REVISION_BUTTON, QUIT_BUTTON]:
-             Button.changeColour(MENU_MOUSE_POS)
-             Button.update(screen) #updates the buttons colour on screen if contacted with by the player
-        
-        for event in pygame.event.get():
-             if event.type == pygame.QUIT:
-                 pygame.quit()
-                 sys.exit()
-             elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                 if PLAY_BUTTON.is_clicked(MENU_MOUSE_POS):
-                     play()
-                 elif REVISION_BUTTON.is_clicked(MENU_MOUSE_POS):
-                     options()
-                 elif QUIT_BUTTON.is_clicked(MENU_MOUSE_POS):
-                     pygame.quit()
-                     sys.exit()
-
-        pygame.display.update() #updates the display
-
-
-
-
 #================================================================================
 
 #================================================================================
@@ -290,7 +191,7 @@ class Soldier(pygame.sprite.Sprite):
             self.in_air = True
 
         #apply gravity downwards to 
-        self.vel_y += GRAVITYFORCE
+        self.vel_y += GRAVITY_FORCE
         if self.vel_y > 10:
             self.vel_y  
         dy += self.vel_y
@@ -463,7 +364,7 @@ class PlasmaGrenade(pygame.sprite.Sprite):
         self.direction = direction
 
     def update(self):
-        self.vel_y += GRAVITYFORCE
+        self.vel_y += GRAVITY_FORCE
         dx = self.direction * self.speed
         dy = self.vel_y
 
