@@ -70,16 +70,25 @@ shoot = False
 plasma_grenade = False
 plasma_grenade_is_thrown = False
 
-
+#================================================================================
 #load images
-#laser
-laser_img = pygame.image.load('img/icons/laser.png').convert_alpha()
-#grenade
-plasma_grenade_img = pygame.image.load('img/icons/plasma_grenade.png').convert_alpha()
-#plasma boxes
-med_box_img = pygame.image.load('img/icons/med_box.png').convert_alpha()
-laser_box_img = pygame.image.load('img/icons/med_box.png').convert_alpha()
-plasma_grenade_box_img = pygame.image.load('img/icons/med_box.png').convert_alpha()
+#================================================================================
+
+#================================================================================
+#store tile images in list
+#================================================================================
+
+img_list = []
+for i in range(tile_variant):
+    img = pygame.image.load(f'img/tile/{i}.png')
+    img = pygame.transform.scale(img, (tile_magnitude, tile_magnitude))
+    img_list.append(img)
+
+laser_img = pygame.image.load('assets/levels/laser.png').convert_alpha()
+plasma_grenade_img = pygame.image.load('assets/levels/plasma_grenade.png').convert_alpha()
+med_box_img = pygame.image.load('assets/levels/med_box.png').convert_alpha()
+laser_box_img = pygame.image.load('assets/levels/laser_box.png').convert_alpha()
+plasma_grenade_box_img = pygame.image.load('assets/levels/plasma_grenade_box.png').convert_alpha()
 plasma_boxes = {
     'Med'               : med_box_img,
     'Laser'             : laser_box_img,
@@ -152,9 +161,9 @@ class Soldier(pygame.sprite.Sprite):
             #reset temporary list of images
             temp_list = []
             #count number of files in the folder
-            num_of_frames = len(os.listdir(f'img/{self.char_type}/{animation}'))
+            num_of_frames = len(os.listdir(f'assets/{self.char_type}/{animation}'))
             for i in range(num_of_frames):    
-                img = pygame.image.load(f'img/{self.char_type}/{animation}/{i}.png').convert_alpha()
+                img = pygame.image.load(f'assets/{self.char_type}/{animation}/{i}.png').convert_alpha()
                 img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
                 temp_list.append(img)
             self.animation_list.append(temp_list)
@@ -290,6 +299,27 @@ class Soldier(pygame.sprite.Sprite):
         screen.blit(pygame.transform.flip(self.image, self.flip, False), self.rect)
 
 #================================================================================
+#level class
+#================================================================================
+
+class Level():
+    def __init__(self):
+        self.obstacle_list = []
+
+    def process_data(self, data):
+        self.level_data = []
+        for y, row in enumerate(data):
+            self.level_data.append([])
+            for x, tile in enumerate(row):
+                if tile >= 0:
+                    img = img_list[tile]
+                    img_rect = img.get_rect()
+                    img_rect.x = x * tile_magnitude
+                    img_rect.y = y * tile_magnitude
+                    tile_data = (img, img_rect)
+                    self.level_data[y].append(tile)
+
+#================================================================================
 #plasma box class
 #================================================================================
 
@@ -348,7 +378,7 @@ class Laser(pygame.sprite.Sprite):
             if player.alive:
                 player.health -= 5
                 self.kill()
-        for enemy in enemysoldier_group:
+        for enemy in enemy_soldier_group:
             if pygame.sprite.spritecollide(enemy, laser_group, False):
                     if player.alive:
                         enemy.health -= 25
@@ -398,7 +428,7 @@ class Plasma_Grenade(pygame.sprite.Sprite):
             if abs(self.rect.centerx - player.rect.centerx) < tile_magnitude * 2 and \
                 abs(self.rect.centery - player.rect.centery) < tile_magnitude * 2:
                 player.health -= 75
-            for enemysoldier in enemysoldier_group:
+            for enemy_soldier in enemy_soldier_group:
                if abs(self.rect.centerx - enemy.rect.centerx) < tile_magnitude * 2 and \
                 abs(self.rect.centery - enemy.rect.centery) < tile_magnitude * 2:
                 enemy.health -= 75
@@ -413,7 +443,7 @@ class Plasma_Explosion(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.images = []
         for i in range(1,6):
-            img = pygame.image.load(f'img/explosion/{i}.png').convert_alpha()
+            img = pygame.image.load(f'assets/explosion/{i}.png').convert_alpha()
             img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
             self.images.append(img)
         self.frame_index = 0
@@ -455,7 +485,7 @@ class Tile(pygame.sprite.Sprite):
 #create sprite groups
 #================================================================
 
-enemysoldier_group = pygame.sprite.Group()
+enemy_soldier_group = pygame.sprite.Group()
 laser_group = pygame.sprite.Group()
 plasma_grenade_group = pygame.sprite.Group()
 plasma_explosion_group = pygame.sprite.Group()
@@ -474,7 +504,7 @@ player = Soldier('player', 200, 200, 1.65, 2, 20, 5)
 
 
 enemy = Soldier('enemy', 500, 200, 1.65, 2, 20, 0)
-enemysoldier_group.add(enemy)
+enemy_soldier_group.add(enemy)
 
 
 x = 200
@@ -482,8 +512,20 @@ y = 200
 scale = 3
 
 #================================================================
-#
+#create empty list for tiles
 #================================================================
+
+level_data = []
+for row in range(row_counter):
+    r = [-1] * column_counter
+    print(r)
+    level_data.append(r)
+
+with open(f'level{level}_data.csv', newline='') as csvfile:
+    reader = csv.reader(csvfile, delimiter=',')
+    for x, row in enumerate(reader):
+        for y, tile in enumerate(row):
+            level_data[x][y] = int(tile)
 
 #================================================================
 #main game loop
@@ -511,7 +553,7 @@ while run:
     player.update()
     player.draw()
 
-    for enemy in enemysoldier_group:
+    for enemy in enemy_soldier_group:
         enemy.ai()
         enemy.update()
         enemy.draw()
