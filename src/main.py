@@ -50,7 +50,7 @@ screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Combat Cosmonaut')
 #define game variables
 gravity_uni = 1.00
-tile_variant = 3
+tile_variant = 6
 row_counter = 16
 tile_magnitude = height // row_counter
 column_counter = 150
@@ -480,6 +480,10 @@ enemysoldier_group.add(enemy)
 x = 200
 y = 200
 scale = 3
+
+#================================================================
+#
+#================================================================
 
 #================================================================
 #main game loop
