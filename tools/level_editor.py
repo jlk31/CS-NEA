@@ -39,6 +39,7 @@ platform = pygame.transform.scale(pygame.image.load('assets/levels/tiles/platfor
 med_box = pygame.transform.scale(pygame.image.load('assets/levels/tiles/med_box.png'), (100, 50))
 laser_box = pygame.transform.scale(pygame.image.load('assets/levels/tiles/laser_box.png'), (100, 50))
 plasma_grenade_box = pygame.transform.scale(pygame.image.load('assets/levels/tiles/plasma_grenade_box.png'), (100, 50))
+exit = pygame.transform.scale(pygame.image.load('assets/levels/tiles/exit_door.png'), (100, 50))
 
 tiles = ['', moon_rock, ground_rock, platform]
 frames = []

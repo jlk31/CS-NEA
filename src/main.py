@@ -89,7 +89,7 @@ plasma_grenade_img = pygame.image.load('assets/levels/plasma_grenade.png').conve
 med_box_img = pygame.image.load('assets/levels/med_box.png').convert_alpha()
 laser_box_img = pygame.image.load('assets/levels/laser_box.png').convert_alpha()
 plasma_grenade_box_img = pygame.image.load('assets/levels/plasma_grenade_box.png').convert_alpha()
-plasma_boxes = {
+supply_boxes = {
     'Med'               : med_box_img,
     'Laser'             : laser_box_img,
     'Plasma_grenade'             :plasma_grenade_box_img
@@ -319,21 +319,27 @@ class Level():
                     tile_data = (img, img_rect)
                     if tile >= 0 and tile <= 4:
                         self.obstacle_list.append(tile_data)
-                    elif tile >= 5 and tile <= 6:
-                        plasma_box = PlasmaBox('Med', x * tile_magnitude, y * tile_magnitude)
-                        plasma_box_group.add(plasma_box)
+                    elif tile >= 5:
+                        supply_box = supply_box('Med', x * tile_magnitude, y * tile_magnitude)
+                        supply_box_group.add(supply_box)
+                    elif tile >= 6:
+                        supply_box = supply_box('Laser', x * tile_magnitude, y * tile_magnitude)
+                        supply_box_group.add(supply_box)
+                    elif tile >= 7:
+                        supply_box = supply_box('Plasma Grenade', x * tile_magnitude, y * tile_magnitude)
+                        supply_box_group.add(supply_box)
 
 #================================================================================
 #plasma box class
 #================================================================================
 
-class PlasmaBox(pygame.sprite.Sprite):
+class SupplyBox(pygame.sprite.Sprite):
     def __init__(self, item_type, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.item_type = item_type
-        self.image = plasma_boxes[self.item_type]
+        self.image = supply_boxes[self.item_type]
         self.rect = self.image.get_rect()
-        self.rect.centertop = (x + tile_magnitude // 2, y + (tile_magnitude - self.image.get_height()))
+        self.rect.midtop = (x + tile_magnitude // 2, y + (tile_magnitude - self.image.get_height()))
 
 
     def update(self):
@@ -491,17 +497,17 @@ class Tile(pygame.sprite.Sprite):
 
 enemy_soldier_group = pygame.sprite.Group()
 laser_group = pygame.sprite.Group()
-plasma_grenade_group = pygame.sprite.Group()
-plasma_explosion_group = pygame.sprite.Group()
-plasma_box_group = pygame.sprite.Group()
+supply_grenade_group = pygame.sprite.Group()
+supply_explosion_group = pygame.sprite.Group()
+supply_box_group = pygame.sprite.Group()
 
 #temp - create plasma boxes
-plasma_box = PlasmaBox('Med', 100, 260)
-plasma_box_group.add(plasma_box)
-plasma_box = PlasmaBox('Laser', 400, 260)
-plasma_box_group.add(plasma_box)
-plasma_box = PlasmaBox('Plasma_grenade', 500, 260)
-plasma_box_group.add(plasma_box)
+supply_box = SupplyBox('Med', 100, 260)
+supply_box_group.add(supply)
+supply_box = SupplyBox('Laser', 400, 260)
+supply_box_group.add(supply_box)
+supply_box = SupplyBox('Plasma_grenade', 500, 260)
+supply_box_group.add(supply_box)
 
 player = Soldier('player', 200, 200, 1.65, 2, 20, 5)
 
@@ -565,11 +571,11 @@ while run:
     laser_group.update()
     plasma_grenade_group.update()
     plasma_explosion_group.update()
-    plasma_box_group.update()
+    supply_box_group.update()
     laser_group.draw(screen)
     plasma_grenade_group.draw(screen)
     plasma_explosion_group.draw(screen)
-    plasma_box_group.draw(screen)
+    supply_box_group.draw(screen)
 
     #update player actions
     if player.alive:
