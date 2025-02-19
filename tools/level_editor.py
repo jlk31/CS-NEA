@@ -33,18 +33,18 @@ level.append([1 for _ in range(18)])
 #================================================================
 
 background = pygame.image.load('nea_assets/img/background/space_bg.png')
-moon_rock = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/moon_rock.png'), (100, 100))
-ground_rock = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/ground_rock.png'), (100, 100))
-platform = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/platform.png'), (100, 50))
-med_box = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/med_box.png'), (100, 50))
-laser_box = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/laser_box.png'), (100, 50))
-plasma_grenade_box = pygame.transform.scale(pygame.image.load('nea_assets/img/tiles/plasma_grenade_box.png'), (100, 50))
+moon_rock = pygame.transform.scale(pygame.image.load('assets/levels/tiles/moon_rock.png'), (100, 100))
+ground_rock = pygame.transform.scale(pygame.image.load('assets/levels/tiles/ground_rock.png'), (100, 100))
+platform = pygame.transform.scale(pygame.image.load('assets/levels/tiles/platform.png'), (100, 50))
+med_box = pygame.transform.scale(pygame.image.load('assets/levels/tiles/med_box.png'), (100, 50))
+laser_box = pygame.transform.scale(pygame.image.load('assets/levels/tiles/laser_box.png'), (100, 50))
+plasma_grenade_box = pygame.transform.scale(pygame.image.load('assets/levels/tiles/plasma_grenade_box.png'), (100, 50))
 
 tiles = ['', moon_rock, ground_rock, platform]
 frames = []
 player_scale = 14
 for _ in range(1, 5):
-    frames.append(pygame.transform.scale(pygame.image.load(f'nea_assets/img/player/aow.png'),
+    frames.append(pygame.transform.scale(pygame.image.load(f'assets/levels/tiles/aow.png'),
                                         (player_scale * 5, player_scale * 8)))
 
 #================================================================
