@@ -1,24 +1,18 @@
 #pip install pygame -pre
 #https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/non-exam-assessment-administration
 
-#Simple mathematical calculations - 
-#Linear Search --------------------
-#Non-SQL table access -------------
-#Web service APIs -----------------
-#Simple client-server model -------
+#Linear Search -------------------- 
+#Non-SQL table access ------------- (539)
 #Server-side scripting ------------
-#Generation of objects(OOP) -------
-#Simple user defined algorithms ---
-#Writing and reading from files ---
-#Binary search --------------------
+#Generation of objects(OOP) ------- (138), (318), (349), (383), (413), (464)
+#Simple user defined algorithms --- (63), (115), (122), (199), (499)
+#Writing and reading from files --- (499), (541)
+#Binary search -------------------- 
 #Bubble sort ----------------------
-#Simple OOP model ----------------- (201), (390), (424), (454), (505), (540)
+#Simple OOP model ----------------- (138), (318), (349), (383), (413), (464)
 #Intermediate stack operations ---- ()
 #Recursive algorithms ------------- (381), (507), (542)
-#Cross-table parameterised SQL ---- ()
-#Aggregate SQL functions 
-#List operations ------------------ (218), (237), (508)
-
+#List operations ------------------ (82), (156), (172), (176), (185), (283), (289), (291), (321), (324), (329), (468), (474), (494), (542), (544), (552)
 
 #line numbers will change as program is amended/tested/updated
 
@@ -346,7 +340,7 @@ class Level():
                         supply_box_group.add(supply_box)
 
 #================================================================================
-#plasma box class
+#supply box class
 #================================================================================
 
 class SupplyBox(pygame.sprite.Sprite):
@@ -496,6 +490,20 @@ class Plasma_Explosion(pygame.sprite.Sprite):
                 self.image = self.images[self.frame_index]
 
 #================================================================
+#game state saving
+#================================================================
+
+def save_state(player, level_data):
+    with open('game_state.txt', 'w') as file:
+        file.write(f'Player Health: {player.health}\n')
+        file.write(f'Player Ammo: {player.ammo}\n')
+        file.write(f'Player Plasma Grenades: {player.plasma_grenades}\n')
+        file.write(f'Level Data:\n')
+        for row in level_data:
+            file.write(','.join(map(str, row)) + '\n')
+        print('Game state saved')
+
+#================================================================
 #create sprite groups
 #================================================================
 
@@ -507,7 +515,7 @@ supply_box_group = pygame.sprite.Group()
 
 #temp - create plasma boxes
 supply_box = SupplyBox('Med', 100, 260)
-supply_box_group.add(supply)
+supply_box_group.add(supply_box)
 supply_box = SupplyBox('Laser', 400, 260)
 supply_box_group.add(supply_box)
 supply_box = SupplyBox('Plasma_grenade', 500, 260)
