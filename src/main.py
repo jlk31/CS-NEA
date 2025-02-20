@@ -220,7 +220,7 @@ class Soldier(pygame.sprite.Sprite):
             self.vel_y  
         dy += self.vel_y
 
-        #check collision with floor
+        #collision checking
         if self.rect.bottom + dy > 300:
             dy = 300 - self.rect.bottom
             self.in_air = False
@@ -338,6 +338,26 @@ class Level():
                     elif tile >= 7:
                         supply_box = supply_box('Plasma Grenade', x * tile_magnitude, y * tile_magnitude)
                         supply_box_group.add(supply_box)
+                    elif tile == 8:
+                        exit = Exit(img, x * tile_magnitude, y * tile_magnitude)
+                        exit_group.add(exit)
+            
+        return player
+
+    def draw(self):
+        for tile in self.obstacle_list:
+            screen.blit(tile[0], tile[1])
+
+#================================================================================
+#exit class
+#================================================================================
+
+class Exit(pygame.sprite.Sprite):
+    def __init__(self, img, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = img
+        self.rect = self.image.get_rect()
+        self.rect.midtop = (x + tile_magnitude // 2, y + (tile_magnitude - self.image.get_height()))
 
 #================================================================================
 #supply box class
@@ -371,7 +391,6 @@ class SupplyBox(pygame.sprite.Sprite):
 
             #remove box
             self.kill() 
-
 
 #================================================================
 #laser class
@@ -512,6 +531,7 @@ laser_group = pygame.sprite.Group()
 plasma_grenade_group = pygame.sprite.Group()
 plasma_explosion_group = pygame.sprite.Group()
 supply_box_group = pygame.sprite.Group()
+exit_group = pygame.sprite.Group()
 
 #temp - create plasma boxes
 supply_box = SupplyBox('Med', 100, 260)
@@ -547,6 +567,9 @@ with open(f'level{level}_data.csv', newline='') as csv:
         for y, tile in enumerate(row):
             level_data[x][y] = int(tile)
 
+level = Level()
+player = level.process_data(level_data)
+
 #================================================================
 #main game loop
 #================================================================
@@ -557,6 +580,7 @@ while run:
     sys_clock.tick(FPS)
 
     draw_bg()
+    level.draw()
     #show health count
     draw_text('HEALTH: ', font, WHITE, 15, 20)
     for x in range(player.max_health):
@@ -578,16 +602,20 @@ while run:
         enemy.update()
         enemy.draw()
 
-    
-    #update and draw groups
+#================================================================================
+#update and draw sprite groups
+#================================================================================
+
     laser_group.update()
     plasma_grenade_group.update()
     plasma_explosion_group.update()
     supply_box_group.update()
+    exit_group.update()
     laser_group.draw(screen)
     plasma_grenade_group.draw(screen)
     plasma_explosion_group.draw(screen)
     supply_box_group.draw(screen)
+    exit_group.draw(screen)
 
     #update player actions
     if player.alive:
@@ -612,11 +640,6 @@ while run:
         else:
             player.update_action(0)#0: idle
         player.move(moving_left, moving_right)
-
-
-#================================================================
-#levels
-#================================================================
 
 #================================================================
 #send player username to server
