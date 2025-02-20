@@ -7,8 +7,7 @@
 #Generation of objects(OOP) ------- (138), (318), (349), (383), (413), (464)
 #Simple user defined algorithms --- (63), (115), (122), (199), (499)
 #Writing and reading from files --- (499), (541)
-#Binary search -------------------- 
-#Bubble sort ----------------------
+#Binary search --------------------
 #Simple OOP model ----------------- (138), (318), (349), (383), (413), (464)
 #Intermediate stack operations ---- ()
 #Recursive algorithms ------------- (381), (507), (542)
@@ -181,6 +180,8 @@ class Soldier(pygame.sprite.Sprite):
         self.img = self.animation_list[self.action][self.frame_index] 
         self.rect = self.img.get_rect()
         self.rect.center = (x, y)    
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
 
     def update(self):
         self.update_animation()
@@ -214,13 +215,24 @@ class Soldier(pygame.sprite.Sprite):
             self.jump = False
             self.in_air = True
 
-        #apply gravity downwards to 
+        #apply gravitational force constant 
         self.vel_y += gravity_uni
         if self.vel_y > 10:
             self.vel_y  
         dy += self.vel_y
 
         #collision checking
+        for tile in level.obstacle_list:
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                dx = 0
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                if self.vel_y < 0:
+                    self.vel_y = 0
+                    dy = tile[1].bottom - self.rect.top
+                elif self.vel_y >= 0:
+                    self.vel_y = 0
+                    dy = tile[1].top - self.rect.bottom
+                    self.in_air = False
         if self.rect.bottom + dy > 300:
             dy = 300 - self.rect.bottom
             self.in_air = False
@@ -412,7 +424,12 @@ class Laser(pygame.sprite.Sprite):
         if self.rect.right < 0 or self.rect.left > width:
             self.kill()
 
-        #check collision with characters
+        #level collision checking
+        for tile in level.obstacle_list:
+            if tile[1].colliderect(self.rect):
+                self.kill()
+
+        #character collision checking
         if pygame.sprite.spritecollide(player, laser_group, False):
             if player.alive:
                 player.health -= 5
@@ -422,6 +439,7 @@ class Laser(pygame.sprite.Sprite):
                     if player.alive:
                         enemy.health -= 25
                         self.kill()
+
 #================================================================
 #plasma grenade class
 #================================================================
@@ -435,12 +453,30 @@ class Plasma_Grenade(pygame.sprite.Sprite):
         self.image = plasma_grenade_img
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
         self.direction = direction
 
     def update(self):
         self.vel_y += gravity_uni
         dx = self.direction * self.speed
         dy = self.vel_y
+
+        #level collision checking
+        for tile in level.obstacle_list:
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                self.direction *= -1
+                dx = self.direction * self.speed
+
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                self.speed = 0
+                if self.vel_y < 0:
+                    self.vel_y = 0
+                    dy = tile[1].bottom - self.rect.top
+                    self.vel_y = 0
+                elif self.vel_y >= 0:
+                    self.vel_y = 0
+                    dy = tile[1].top - self.rect.bottom
 
         #check if plasma grenade has collided with the floor tile
         if self.rect.bottom + dy > 300:
@@ -451,7 +487,6 @@ class Plasma_Grenade(pygame.sprite.Sprite):
         if self.rect.left + dx < 0 or self.rect.left + dx > width:
             self.direction *= -1
             dx = self.direction * self.speed
-
 
         #update positional vector of plasma grenade
         self.rect.x += dx
