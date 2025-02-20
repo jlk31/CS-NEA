@@ -24,7 +24,7 @@ def client_handler(client_socket, db_manager):
             msg = client_socket.recv(1024).decode('utf-8') 
             if not msg:
                 break
-            print(f'Recieved: {msg}')
+            print(f'Received: {msg}')
             result = db_manager.fetch_all('SELECT * FROM users WHERE username = ?', (msg,))
             client_socket.send(str(result).encode('utf-8'))
         except:
@@ -41,9 +41,14 @@ def main():
 
     server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_socket.bind((HOST, PORT))
-    server.listen(5)
+    server_socket.listen(5)
     print(f'Server is listening on {HOST}:{PORT}')
 
     while True:
-        client_socket, addr = server.accept()
-        pass
+        client_socket, addr = server_socket.accept()
+        print(f'Connection from {addr}')
+        client_thread = threading.Thread(target=client_handler, args=(client_socket, db_manager))
+        client_thread.start()
+
+if __name__ == 'main':
+    main()

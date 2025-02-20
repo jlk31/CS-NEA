@@ -49,12 +49,15 @@ height = int(width * 0.8)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Combat Cosmonaut')
 #define game variables
+HOST = '127.0.0.1'
+PORT = 65432
 gravity_uni = 1.00
 tile_variant = 6
 row_counter = 16
 tile_magnitude = height // row_counter
 column_counter = 150
 level = 1
+
 
 #================================================================================
 #draw background subroutine
@@ -115,8 +118,20 @@ def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
 #================================================================================
-#display background image
+#server connection
 #================================================================================
+
+def server_communication(data):
+    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client_socket.connect((HOST, PORT))
+    try:
+        client_socket.send(data.encode('utf-8'))
+        response = client_socket.recv(1024).decode('utf-8')
+        print(f'Response from server: {response}')
+    except:
+        print('Connection closed')
+    finally:
+        client_socket.close()
 
 #================================================================================
 #soldier class for player and enemies
@@ -582,6 +597,7 @@ while run:
         #shoot lasers
         if shoot:
             player.shoot()
+            server_communication(f'Player shot a laser. Ammo left: {player.ammo}')
         #throw grenades
         elif plasma_grenade and plasma_grenade_isthrown == False and player.plasma_grenades > 0:
             plasma_grenade = Plasma_Grenade(player.rect.centerx + (0.5 * player.rect.size[0] * player.direction),\
@@ -590,6 +606,7 @@ while run:
             #subtract plasma grenades
             player.plasma_grenades -= 1
             plasma_grenade_isthrown = True
+            server_communication(f'Player threw a plasma grenade. Plasma grenades left: {player.plasma_grenades}')
             print(player.plasma_grenades)
         if player.in_air:
             player.update_action(2)#2: jump
@@ -604,12 +621,18 @@ while run:
 #levels
 #================================================================
 
+#================================================================
+#send player username to server
+#================================================================
+
+player_username = 'player1'
+server_communication(player_username)
 
 #================================================================
 #event handler
 #================================================================
 
-    for event in pygame.event.get():
+for event in pygame.event.get():
         #quit game
         if event.type == pygame.QUIT:
             run = False
