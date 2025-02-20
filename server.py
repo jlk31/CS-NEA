@@ -45,4 +45,5 @@ def main():
     print(f'Server is listening on {HOST}:{PORT}')
 
     while True:
-        client_socket, addr
+        client_socket, addr = server.accept()
+        pass

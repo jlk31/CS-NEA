@@ -29,10 +29,10 @@ import pygame
 import sys
 import os
 import sqlite3
-import time
 import random
-import math 
 import csv
+import socket
+import threading
 
 #================================================================================
 #parameters
