@@ -87,6 +87,7 @@ for i in range(tile_variant):
     img = pygame.transform.scale(img, (tile_magnitude, tile_magnitude))
     img_list.append(img)
 
+health_img = pygame.image.load('assets/levels/health.png').convert_alpha()
 laser_img = pygame.image.load('assets/levels/laser.png').convert_alpha()
 plasma_grenade_img = pygame.image.load('assets/levels/plasma_grenade.png').convert_alpha()
 med_box_img = pygame.image.load('assets/levels/med_box.png').convert_alpha()
@@ -495,25 +496,13 @@ class Plasma_Explosion(pygame.sprite.Sprite):
                 self.image = self.images[self.frame_index]
 
 #================================================================
-#tile class
-#================================================================
-
-class Tile(pygame.sprite.Sprite):
-    def __init__(self, x, y, width):
-        pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.transform.scale(tile_img, (width, 10))
-        self.rect =self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
-
-#================================================================
 #create sprite groups
 #================================================================
 
 enemy_soldier_group = pygame.sprite.Group()
 laser_group = pygame.sprite.Group()
-supply_grenade_group = pygame.sprite.Group()
-supply_explosion_group = pygame.sprite.Group()
+plasma_grenade_group = pygame.sprite.Group()
+plasma_explosion_group = pygame.sprite.Group()
 supply_box_group = pygame.sprite.Group()
 
 #temp - create plasma boxes
@@ -544,8 +533,8 @@ for row in range(row_counter):
     print(r)
     level_data.append(r)
 
-with open(f'level{level}_data.csv', newline='') as csvfile:
-    reader = csv.reader(csvfile, delimiter=',')
+with open(f'level{level}_data.csv', newline='') as csv:
+    reader = csv.reader(csv, delimiter=',')
     for x, row in enumerate(reader):
         for y, tile in enumerate(row):
             level_data[x][y] = int(tile)
@@ -653,13 +642,7 @@ for event in pygame.event.get():
         #mouse presses
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouse_pos = pygame.mouse.get_pos()
-            if play_button.is_clicked(mouse_pos):
-                play_game()
-            if leaderboard_button.is_clicked(mouse_pos):
-                show_leaderboard()
-            if quit_button.is_clicked(mouse_pos):
-                pygame.quit()
-                sys.exit()            
+                        
 
         #keyboard button released            
         if event.type == pygame.KEYUP:
@@ -671,7 +654,7 @@ for event in pygame.event.get():
                 shoot = False
             if event.key == pygame.K_q:
                 plasma_grenade = False
-                plasma_grenade_isthrown = False
+                plasma_grenade_is_thrown = False
         
 
         pygame.display.update()
