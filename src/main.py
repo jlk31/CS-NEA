@@ -289,7 +289,7 @@ class Soldier(pygame.sprite.Sprite):
         ANIMATION_COOLDOWN = 100
         #update image depending on current frame
         self.image = self.animation_list[self.action][self.frame_index]
-        #check if enough time has passed since the last udpate
+        #check if enough time has passed since the last update
         if pygame.time.get_ticks() - self.update_time > ANIMATION_COOLDOWN:
             self.update_time = pygame.time.get_ticks()
             self.frame_index += 1
