@@ -11,7 +11,7 @@ from sqlite3 import Error
 
 class DBManager:
     def __init__(self, db_file):
-        #Initialize the database manager with a database file
+        #Initialise the database manager with a database file
         self.db_file = db_file
         self.conn = None
 
