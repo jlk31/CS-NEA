@@ -40,7 +40,7 @@ sys_clock = pygame.time.Clock()
 width = 800
 height = int(width * 0.8)
 screen = pygame.display.set_mode((width, height))
-pygame.display.set_caption('Combat Cosmonaut')
+pygame.display.set_caption('Cosmic Survivor')
 #define game variables
 HOST = '127.0.0.1'
 PORT = 65432
