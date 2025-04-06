@@ -45,6 +45,9 @@ pygame.display.set_caption('Cosmic Survivor')
 HOST = '127.0.0.1'
 PORT = 65432
 gravity_uni = 1.00
+SCROLL_THRESH = 200
+screen_scroll = 0
+bgd_scroll = 0
 tile_variant = 6
 row_counter = 16
 tile_magnitude = height // row_counter
@@ -56,8 +59,9 @@ level = 1
 #draw background subroutine
 #================================================================================
 
-def draw_bg():
-    screen.fill(BG_COLOUR)
+def draw_bgd():
+    screen.fill(BGD_COLOUR)
+    screen.blit(space_img, (0, 0))
 
 #define player action variables
 moving_left = False
@@ -69,7 +73,7 @@ plasma_grenade_is_thrown = False
 #================================================================================
 #load images
 #================================================================================
-
+space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 #================================================================================
 #store tile images in list
 #================================================================================
@@ -98,7 +102,7 @@ font = pygame.font.SysFont('Arial', 50)
 
 
 #define colours
-BG_COLOUR = (144, 201, 120)
+BGD_COLOUR = (144, 201, 120)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -600,7 +604,7 @@ while run:
 
     sys_clock.tick(FPS)
 
-    draw_bg()
+    draw_bgd()
     level.draw()
     #show health count
     draw_text('HEALTH: ', font, WHITE, 15, 20)
