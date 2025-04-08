@@ -61,7 +61,9 @@ level = 1
 
 def draw_bgd():
     screen.fill(BGD_COLOUR)
-    screen.blit(space_img, (0 - bgd_scroll, 0))
+    width = space_img.get_width()
+    for j in range(5):  
+        screen.blit(space_img, ((j * width) - bgd_scroll, 0))
 
 #define player action variables
 moving_left = False
@@ -248,7 +250,7 @@ class Soldier(pygame.sprite.Sprite):
 
         #update scroll based on player's position
         if self.char_type == 'player':
-            if self.rect.right < width - SCROLL_THRESH or self.rect.left < SCROLL_THRESH:
+            if (self.rect.right < width - SCROLL_THRESH and bgd_scroll < (world.level_length * tile_magnitude) - width) or self.rect.left < SCROLL_THRESH:
                 self.rect.x -= dx
                 screen_scroll = -dx
 
@@ -344,6 +346,7 @@ class Level():
         self.obstacle_list = []
 
     def process_data(self, data):
+        self.level_length = len(data[0])
         self.level_data = []
         for y, row in enumerate(data):
             self.level_data.append([])
