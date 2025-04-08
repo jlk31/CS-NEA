@@ -401,6 +401,8 @@ class SupplyBox(pygame.sprite.Sprite):
 
 
     def update(self):
+        #scroll supply boxes
+        self.rect.x += screen_scroll
         #checking for player collision with the refill box
         if pygame.sprite.collide_rect(self, player):
             #check for box type
