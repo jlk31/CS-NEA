@@ -61,7 +61,7 @@ level = 1
 
 def draw_bgd():
     screen.fill(BGD_COLOUR)
-    screen.blit(space_img, (0, 0))
+    screen.blit(space_img, (0 - bgd_scroll, 0))
 
 #define player action variables
 moving_left = False
@@ -437,7 +437,7 @@ class Laser(pygame.sprite.Sprite):
 
     def update(self):
         #give the laser motion
-        self.rect.x += (self.direction * self.speed)
+        self.rect.x += (self.direction * self.speed) + screen_scroll
         #check if laser has left the screen
         if self.rect.right < 0 or self.rect.left > width:
             self.kill()
@@ -507,7 +507,7 @@ class Plasma_Grenade(pygame.sprite.Sprite):
             dx = self.direction * self.speed
 
         #update positional vector of plasma grenade
-        self.rect.x += dx
+        self.rect.x += dx + screen_scroll
         self.rect.y += dy
 
         #countdown timer for plasma grenade
@@ -547,6 +547,8 @@ class Plasma_Explosion(pygame.sprite.Sprite):
         self.counter = 0
 
     def update(self):
+        #scroll plasma explosion
+        self.rect.x += screen_scroll
         PLASMA_EXPLOSION_SPEED = 4
         #update plasma explosion animation
         self.counter += 1
@@ -678,6 +680,7 @@ while run:
             player.update_action(1)#1: run
         else:
             player.update_action(0)#0: idle
+            bgd_scroll -= screen_scroll
         screen_scroll = player.move(moving_left, moving_right)
 
 #================================================================
