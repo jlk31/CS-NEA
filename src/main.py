@@ -83,13 +83,13 @@ space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 
 img_list = []
 for i in range(tile_variant):
-    img = pygame.image.load(f'img/tile/{i}.png')
+    img = pygame.image.load(f'assets/levels/tiles/{i}.png')
     img = pygame.transform.scale(img, (tile_magnitude, tile_magnitude))
     img_list.append(img)
 
 health_img = pygame.image.load('assets/levels/health.png').convert_alpha()
-laser_img = pygame.image.load('assets/levels/laser.png').convert_alpha()
-plasma_grenade_img = pygame.image.load('assets/levels/plasma_grenade.png').convert_alpha()
+laser_img = pygame.image.load('assets/rifle/laser.png').convert_alpha()
+plasma_grenade_img = pygame.image.load('assets/grenade/plasma_grenade.png').convert_alpha()
 med_box_img = pygame.image.load('assets/levels/med_box.png').convert_alpha()
 laser_box_img = pygame.image.load('assets/levels/laser_box.png').convert_alpha()
 plasma_grenade_box_img = pygame.image.load('assets/levels/plasma_grenade_box.png').convert_alpha()
