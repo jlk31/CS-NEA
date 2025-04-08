@@ -232,6 +232,10 @@ class Soldier(pygame.sprite.Sprite):
         for tile in level.obstacle_list:
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                 dx = 0
+                #change direction of enemy trooper if collision occurs
+                if self.char_type == 'enemy':
+                    self.direction *= -1
+                    self.move_index = 0
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                 if self.vel_y < 0:
                     self.vel_y = 0
@@ -244,13 +248,19 @@ class Soldier(pygame.sprite.Sprite):
             dy = 300 - self.rect.bottom
             self.in_air = False
 
+        #check if player has left the screen
+        if self.char_type == 'player':
+            if self.rect.left + dx < 0 or self.rect.right + dx > width:
+                dx = 0
+
+
         #update rectangle position
         self.rect.x += dx
         self.rect.y += dy
 
         #update scroll based on player's position
         if self.char_type == 'player':
-            if (self.rect.right < width - SCROLL_THRESH and bgd_scroll < (world.level_length * tile_magnitude) - width) or self.rect.left < SCROLL_THRESH:
+            if (self.rect.right < width - SCROLL_THRESH and bgd_scroll < (level.level_length * tile_magnitude) - width) or (self.rect.left < SCROLL_THRESH and bgd_scroll > abs(dx)):
                 self.rect.x -= dx
                 screen_scroll = -dx
 
