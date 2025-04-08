@@ -53,6 +53,7 @@ row_counter = 16
 tile_magnitude = height // row_counter
 column_counter = 150
 level = 1
+start_game = False
 
 
 #================================================================================
