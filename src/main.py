@@ -44,7 +44,7 @@ pygame.display.set_caption('Cosmic Survivor')
 #define game variables
 HOST = '127.0.0.1'
 PORT = 65432
-gravity_uni = 1.00
+GRAVITY_UNI = 1.00
 SCROLL_THRESH = 200
 screen_scroll = 0
 bgd_scroll = 0
@@ -200,6 +200,7 @@ class Soldier(pygame.sprite.Sprite):
 
     def move(self, moving_left, moving_right):
         #reset movement variables
+        screen_scroll = 0
         dx = 0
         dy = 0
 
@@ -220,7 +221,7 @@ class Soldier(pygame.sprite.Sprite):
             self.in_air = True
 
         #apply gravitational force constant 
-        self.vel_y += gravity_uni
+        self.vel_y += GRAVITY_UNI
         if self.vel_y > 10:
             self.vel_y  
         dy += self.vel_y
@@ -244,6 +245,14 @@ class Soldier(pygame.sprite.Sprite):
         #update rectangle position
         self.rect.x += dx
         self.rect.y += dy
+
+        #update scroll based on player's position
+        if self.char_type == 'player':
+            if self.rect.right < width - SCROLL_THRESH or self.rect.left < SCROLL_THRESH:
+                self.rect.x -= dx
+                screen_scroll = -dx
+
+        return screen_scroll
 
     def shoot(self):
         if self.shoot_cooldown == 0 and self.ammo > 0:
@@ -462,7 +471,7 @@ class Plasma_Grenade(pygame.sprite.Sprite):
         self.direction = direction
 
     def update(self):
-        self.vel_y += gravity_uni
+        self.vel_y += GRAVITY_UNI
         dx = self.direction * self.speed
         dy = self.vel_y
 
@@ -664,7 +673,9 @@ while run:
             player.update_action(1)#1: run
         else:
             player.update_action(0)#0: idle
-        player.move(moving_left, moving_right)
+        screen_scroll = player.move(moving_left, moving_right)
+
+        print(screen_scroll)
 
 #================================================================
 #send player username to server
