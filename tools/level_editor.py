@@ -32,7 +32,7 @@ level.append([1 for _ in range(18)])
 #image loading
 #================================================================
 
-background = pygame.image.load('nea_assets/img/background/space_bgd.png')
+background = pygame.image.load('assets/background/space.png')
 moon_rock = pygame.transform.scale(pygame.image.load('assets/levels/tiles/moon_rock.png'), (100, 100))
 ground_rock = pygame.transform.scale(pygame.image.load('assets/levels/tiles/ground_rock.png'), (100, 100))
 platform = pygame.transform.scale(pygame.image.load('assets/levels/tiles/platform.png'), (100, 50))
