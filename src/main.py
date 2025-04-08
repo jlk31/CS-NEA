@@ -294,6 +294,8 @@ class Soldier(pygame.sprite.Sprite):
                     if self.idling_index <= 0:
                         self.idling = False
 
+        #scroll
+        self.rect.x += screen_scroll
 
 
 
@@ -371,6 +373,7 @@ class Level():
 
     def draw(self):
         for tile in self.obstacle_list:
+            tile[1][0] += screen_scroll
             screen.blit(tile[0], tile[1])
 
 #================================================================================
@@ -674,8 +677,6 @@ while run:
         else:
             player.update_action(0)#0: idle
         screen_scroll = player.move(moving_left, moving_right)
-
-        print(screen_scroll)
 
 #================================================================
 #send player username to server
