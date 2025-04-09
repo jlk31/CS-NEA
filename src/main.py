@@ -1,15 +1,11 @@
 #pip install pygame -pre
 #https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/non-exam-assessment-administration
 
-#Linear Search -------------------- 
 #Non-SQL table access ------------- (539)
-#Server-side scripting ------------
 #Generation of objects(OOP) ------- (138), (318), (349), (383), (413), (464)
 #Simple user defined algorithms --- (63), (115), (122), (199), (499)
 #Writing and reading from files --- (499), (541)
-#Binary search --------------------
 #Simple OOP model ----------------- (138), (318), (349), (383), (413), (464)
-#Intermediate stack operations ---- ()
 #Recursive algorithms ------------- (381), (507), (542)
 #List operations ------------------ (82), (156), (172), (176), (185), (283), (289), (291), (321), (324), (329), (468), (474), (494), (542), (544), (552)
 
@@ -76,7 +72,9 @@ plasma_grenade_is_thrown = False
 #================================================================================
 #load images
 #================================================================================
+
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
+
 #================================================================================
 #store tile images in list
 #================================================================================
