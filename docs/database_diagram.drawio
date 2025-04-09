@@ -10,6 +10,9 @@
         <mxCell id="jLqhKAvMNAKT2jjB4rE4-1" value="users" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="80" y="160" width="200" height="200" as="geometry" />
         </mxCell>
+        <mxCell id="jLqhKAvMNAKT2jjB4rE4-4" value="username" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="jLqhKAvMNAKT2jjB4rE4-1">
+          <mxGeometry x="55" y="30" width="80" height="30" as="geometry" />
+        </mxCell>
         <mxCell id="jLqhKAvMNAKT2jjB4rE4-2" value="pass" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="560" y="360" width="200" height="200" as="geometry" />
         </mxCell>
