@@ -2,6 +2,7 @@
 #https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/non-exam-assessment-administration
 
 #Non-SQL table access ------------- (539)
+#Dictionary defined --------------- (95)
 #Generation of objects(OOP) ------- (138), (318), (349), (383), (413), (464)
 #Simple user defined algorithms --- (63), (115), (122), (199), (499)
 #Writing and reading from files --- (499), (541)
@@ -14,6 +15,7 @@
 #===============================================================================
 #Modules being imported
 #===============================================================================
+
 import pygame
 import sys
 import os
