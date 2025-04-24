@@ -76,6 +76,8 @@ plasma_grenade_is_thrown = False
 #load images
 #================================================================================
 
+start_img = pygame.image.load('assets/background/start.png').convert_alpha()
+exit_img = pygame.image.load('assets/background/exit.png').convert_alpha()
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 
 #================================================================================
@@ -635,68 +637,73 @@ while run:
 
     sys_clock.tick(FPS)
 
-    draw_bgd()
-    level.draw()
-    #show health count
-    draw_text('HEALTH: ', font, WHITE, 15, 20)
-    for x in range(player.max_health):
-        screen.blit(health_img, (100 + (x * 20, 25)))
-    #show ammo count
-    draw_text('AMMO: ', font, WHITE, 15, 30)
-    for x in range(player.ammo):
-        screen.blit(laser_img, (100 + (x * 20), 35))
-    #show grenade count
-    draw_text(f'PLASMA GRENADES: ', font, WHITE, 20, 50)
-    for x in range(player.plasma_grenades):
-        screen.blit(plasma_grenade_img, (100 + (x * 25), 55))
+    if start_game == False:
+        #draw main menu
+        screen.fill(bgd)
 
-    player.update()
-    player.draw()
+    else:
+        draw_bgd()
+        level.draw()
+        #show health count
+        draw_text('HEALTH: ', font, WHITE, 15, 20)
+        for x in range(player.max_health):
+            screen.blit(health_img, (100 + (x * 20, 25)))
+        #show ammo count
+        draw_text('AMMO: ', font, WHITE, 15, 30)
+        for x in range(player.ammo):
+            screen.blit(laser_img, (100 + (x * 20), 35))
+        #show grenade count
+        draw_text(f'PLASMA GRENADES: ', font, WHITE, 20, 50)
+        for x in range(player.plasma_grenades):
+            screen.blit(plasma_grenade_img, (100 + (x * 25), 55))
 
-    for enemy in enemy_soldier_group:
-        enemy.ai()
-        enemy.update()
-        enemy.draw()
+        player.update()
+        player.draw()
+
+        for enemy in enemy_soldier_group:
+            enemy.ai()
+            enemy.update()
+            enemy.draw()
 
 #================================================================================
 #update and draw sprite groups
 #================================================================================
 
-    laser_group.update()
-    plasma_grenade_group.update()
-    plasma_explosion_group.update()
-    supply_box_group.update()
-    exit_group.update()
-    laser_group.draw(screen)
-    plasma_grenade_group.draw(screen)
-    plasma_explosion_group.draw(screen)
-    supply_box_group.draw(screen)
-    exit_group.draw(screen)
+        laser_group.update()
+        plasma_grenade_group.update()
+        plasma_explosion_group.update()
+        supply_box_group.update()
+        exit_group.update()
+        laser_group.draw(screen)
+        plasma_grenade_group.draw(screen)
+        plasma_explosion_group.draw(screen)
+        supply_box_group.draw(screen)
+        exit_group.draw(screen)
 
-    #update player actions
-    if player.alive:
-        #shoot lasers
-        if shoot:
-            player.shoot()
-            server_communication(f'Player shot a laser. Ammo left: {player.ammo}')
-        #throw grenades
-        elif plasma_grenade and plasma_grenade_isthrown == False and player.plasma_grenades > 0:
-            plasma_grenade = Plasma_Grenade(player.rect.centerx + (0.5 * player.rect.size[0] * player.direction),\
-                              player.rect.top , player.direction)
-            plasma_grenade_group.add(plasma_grenade)
-            #subtract plasma grenades
-            player.plasma_grenades -= 1
-            plasma_grenade_isthrown = True
-            server_communication(f'Player threw a plasma grenade. Plasma grenades left: {player.plasma_grenades}')
-            print(player.plasma_grenades)
-        if player.in_air:
-            player.update_action(2)#2: jump
-        elif moving_left or moving_right:
-            player.update_action(1)#1: run
-        else:
-            player.update_action(0)#0: idle
-            bgd_scroll -= screen_scroll
-        screen_scroll = player.move(moving_left, moving_right)
+        #update player actions
+        if player.alive:
+            #shoot lasers
+            if shoot:
+                player.shoot()
+                server_communication(f'Player shot a laser. Ammo left: {player.ammo}')
+            #throw grenades
+            elif plasma_grenade and plasma_grenade_isthrown == False and player.plasma_grenades > 0:
+                plasma_grenade = Plasma_Grenade(player.rect.centerx + (0.5 * player.rect.size[0] * player.direction),\
+                                player.rect.top , player.direction)
+                plasma_grenade_group.add(plasma_grenade)
+                #subtract plasma grenades
+                player.plasma_grenades -= 1
+                plasma_grenade_isthrown = True
+                server_communication(f'Player threw a plasma grenade. Plasma grenades left: {player.plasma_grenades}')
+                print(player.plasma_grenades)
+            if player.in_air:
+                player.update_action(2)#2: jump
+            elif moving_left or moving_right:
+                player.update_action(1)#1: run
+            else:
+                player.update_action(0)#0: idle
+                bgd_scroll -= screen_scroll
+            screen_scroll = player.move(moving_left, moving_right)
 
 #================================================================
 #send player username to server
