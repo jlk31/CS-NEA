@@ -24,7 +24,7 @@ import random
 import csv
 import socket
 import threading
-import button
+import button.py
 
 #================================================================================
 #parameters
@@ -123,6 +123,35 @@ font = pygame.font.SysFont('Futura', 30)
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
+
+#resetting level
+
+def reset_level():
+    global bgd_scroll, screen_scroll, level, player, enemy
+    bgd_scroll = 0
+    screen_scroll = 0
+    level = 1
+    player.health = 100
+    player.ammo = player.start_ammo
+    player.plasma_grenades = 5
+    player.alive = True
+    enemy_soldier_group.empty()
+    laser_group.empty()
+    plasma_grenade_group.empty()
+    plasma_explosion_group.empty()
+    supply_box_group.empty()
+    exit_group.empty()
+
+#creating list of empty tiles
+    data = []
+    for row in range(row_counter):
+        r = [-1] * column_counter
+        print(r)
+        data.append(r)
+
+    return data
+
+
 #================================================================================
 #server connection
 #================================================================================
@@ -730,7 +759,15 @@ while run:
             screen_scroll = 0
             if restart_button_img.draw(screen):
                 bgd_scroll = 0
+                level_data = reset_level()
 
+                with open(f'level{level}_data.csv', newline='') as csv:
+                    reader = csv.reader(csv, delimiter=',')
+                    for x, row in enumerate(reader):
+                        for y, tile in enumerate(row):
+                            level_data[x][y] = int(tile)
+                level = Level()
+                player = level.process_data(level_data)
 
 #================================================================
 #send player username to server
