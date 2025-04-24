@@ -288,7 +288,11 @@ class Soldier(pygame.sprite.Sprite):
             self.health = 0
             self.update_action(3)
 
-
+        #check if player has made contact with exit door
+        if pygame.sprite.spritecollide(self, exit_door, False):
+            server_communication('Player has reached the exit')
+            print('Player has reached the exit')
+            self.kill()
 
         #check if player has left the screen
         if self.char_type == 'player':

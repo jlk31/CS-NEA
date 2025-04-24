@@ -1,4 +1,5 @@
 import pygame
+import csv
 
 pygame.init()
 
@@ -98,6 +99,12 @@ def draw_tiles(level):
                 elif value == 4:
                     screen.blit(tiles[value], (p * TILE_SIZE, i * TILE_SIZE + 75))
 
+def save_level_data(level_data, level_number):
+    with open(f'level{level_number}_data.csv', 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',')
+        for row in level_data:
+            writer.writerow(row)
+    print(f"Level {level_number} data saved successfully!")
 #================================================================
 #main game loop
 #================================================================
