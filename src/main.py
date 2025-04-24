@@ -77,8 +77,9 @@ plasma_grenade_is_thrown = False
 #load images
 #================================================================================
 
-start_img = pygame.image.load('assets/background/start.png').convert_alpha()
-exit_img = pygame.image.load('assets/background/exit.png').convert_alpha()
+start_button_img = pygame.image.load('assets/buttons/start.png').convert_alpha()
+exit_button_img = pygame.image.load('assets/buttons/exit.png').convert_alpha()
+restart_button_img = pygame.image.load('assets/buttons/restart.png').convert_alpha()
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 
 #================================================================================
@@ -253,11 +254,17 @@ class Soldier(pygame.sprite.Sprite):
             dy = 300 - self.rect.bottom
             self.in_air = False
 
+        #check if player has fallen off the map
+        if self.rect.bottom > height:
+            self.health = 0
+            self.update_action(3)
+
+
+
         #check if player has left the screen
         if self.char_type == 'player':
             if self.rect.left + dx < 0 or self.rect.right + dx > width:
                 dx = 0
-
 
         #update rectangle position
         self.rect.x += dx
@@ -585,8 +592,9 @@ class Plasma_Explosion(pygame.sprite.Sprite):
 #create buttons
 #================================================================
 
-start_button = button.Button(width // 2 - 100, height // 2 - 50, start_button_img, 1)
-exit_button = button.Button(width // 2 - 100, height // 2 + 50, exit_button_img, 1)
+start_button = button.Button(width // 2 - 130, height // 2 - 150, start_button_img, 1)
+exit_button = button.Button(width // 2 - 110, height // 2 + 50, exit_button_img, 1)
+restart_button = button.Button(width // 2 - 100, height // 2 - 50, restart_button_img, 2)
 
 #================================================================
 #create sprite groups
@@ -648,8 +656,12 @@ while run:
     if start_game == False:
         #draw main menu
         screen.fill(bgd)
-        start_button.draw(screen)
-        exit_button.draw(screen)
+        if start_button.draw(screen):
+            start_game = True
+            server_communication('Player has started the game')
+        if exit_button.draw(screen):
+            run = False
+            server_communication('Player has exited the game')
 
     else:
         draw_bgd()
@@ -712,8 +724,13 @@ while run:
                 player.update_action(1)#1: run
             else:
                 player.update_action(0)#0: idle
-                bgd_scroll -= screen_scroll
+            bgd_scroll -= screen_scroll
             screen_scroll = player.move(moving_left, moving_right)
+        else:
+            screen_scroll = 0
+            if restart_button_img.draw(screen):
+                bgd_scroll = 0
+
 
 #================================================================
 #send player username to server
