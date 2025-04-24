@@ -24,6 +24,7 @@ import random
 import csv
 import socket
 import threading
+import button
 
 #================================================================================
 #parameters
@@ -581,6 +582,13 @@ class Plasma_Explosion(pygame.sprite.Sprite):
                 self.image = self.images[self.frame_index]
 
 #================================================================
+#create buttons
+#================================================================
+
+start_button = button.Button(width // 2 - 100, height // 2 - 50, start_button_img, 1)
+exit_button = button.Button(width // 2 - 100, height // 2 + 50, exit_button_img, 1)
+
+#================================================================
 #create sprite groups
 #================================================================
 
@@ -640,6 +648,8 @@ while run:
     if start_game == False:
         #draw main menu
         screen.fill(bgd)
+        start_button.draw(screen)
+        exit_button.draw(screen)
 
     else:
         draw_bgd()
