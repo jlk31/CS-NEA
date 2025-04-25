@@ -24,7 +24,7 @@ import random
 import csv
 import socket
 import threading
-import button.py
+import button
 
 #================================================================================
 #parameters
