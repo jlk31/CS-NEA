@@ -51,6 +51,7 @@ bgd_scroll = 0
 tile_variant = 6
 row_counter = 16
 tile_magnitude = height // row_counter
+MAX_LEVEL = 5
 column_counter = 150
 level = 1
 start_game = False
@@ -762,12 +763,21 @@ while run:
             bgd_scroll -= screen_scroll
             screen_scroll, level_complete = player.move(moving_left, moving_right)
             if level_complete == True:
+                level += 1
                 bgd_scroll = 0
                 screen_scroll = 0
                 level_data = reset_level()
                 level = Level()
                 player = level.process_data(level_data)
                 server_communication('Player has completed the level')
+                if level <= MAX_LEVEL:
+                    with open(f'level{level}_data.csv', newline='') as csv:
+                        reader = csv.reader(csv, delimiter=',')
+                        for x, row in enumerate(reader):
+                            for y, tile in enumerate(row):
+                                level_data[x][y] = int(tile)
+                    level = Level()
+                    player = level.process_data(level_data)
         else:
             screen_scroll = 0
             if restart_button_img.draw(screen):
