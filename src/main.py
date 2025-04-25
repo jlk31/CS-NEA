@@ -289,7 +289,9 @@ class Soldier(pygame.sprite.Sprite):
             self.update_action(3)
 
         #check if player has made contact with exit door
+        level_complete = False
         if pygame.sprite.spritecollide(self, exit_door, False):
+            level_complete = True
             server_communication('Player has reached the exit')
             print('Player has reached the exit')
             self.kill()
@@ -309,7 +311,7 @@ class Soldier(pygame.sprite.Sprite):
                 self.rect.x -= dx
                 screen_scroll = -dx
 
-        return screen_scroll
+        return screen_scroll, level_complete
 
     def shoot(self):
         if self.shoot_cooldown == 0 and self.ammo > 0:
@@ -758,7 +760,14 @@ while run:
             else:
                 player.update_action(0)#0: idle
             bgd_scroll -= screen_scroll
-            screen_scroll = player.move(moving_left, moving_right)
+            screen_scroll, level_complete = player.move(moving_left, moving_right)
+            if level_complete == True:
+                bgd_scroll = 0
+                screen_scroll = 0
+                level_data = reset_level()
+                level = Level()
+                player = level.process_data(level_data)
+                server_communication('Player has completed the level')
         else:
             screen_scroll = 0
             if restart_button_img.draw(screen):
