@@ -146,6 +146,9 @@ while run:
                         i == 1
                         if active_level > 0:
                             active_level -= 1
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:  # Save level on pressing Enter
+                save_level_data(level, active_level)
             if not button_press:
                 coords = pygame.mouse.get_pos()[0] // 100, pygame.mouse.get_pos()[1] // 100
                 if event.button == 1 or event.button == 4:
