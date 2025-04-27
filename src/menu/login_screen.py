@@ -6,6 +6,7 @@ import sqlite3
 import tkinter as tk
 from tkinter import messagebox
 import hashlib
+from src.menu.login_screen import LoginScreen
 
 #===============================================================================
 #login screen class

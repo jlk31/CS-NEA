@@ -24,7 +24,9 @@ import random
 import csv
 import socket
 import threading
-import button
+from utils.button import Button
+from menu.main_menu import MainMenu
+from menu.login_screen import LoginScreen
 
 #================================================================================
 #main game parameters
@@ -656,7 +658,25 @@ death_transition = Transition(2, RED, 4)
 #create buttons
 #================================================================
 
-start_button = button.Button(width // 2 - 130, height // 2 - 150, start_button_img, 1)
+main_menu = MainMenu(width, height, start_button_img, exit_button_img)
+login_screen = LoginScreen(width, height)
+start_button = main_menu.get_start_button()
+exit_button = main_menu.get_exit_button()
+login_button = login_screen.get_login_button()
+
+#================================================================
+#handle login screen logic
+#================================================================
+
+if not login_screen.is_logged_in():
+    while not login_screen.is_logged_in():
+        login_screen.draw(screen)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            login_screen.handle_event(event)
 exit_button = button.Button(width // 2 - 110, height // 2 + 50, exit_button_img, 1)
 restart_button = button.Button(width // 2 - 100, height // 2 - 50, restart_button_img, 2)
 
@@ -719,7 +739,7 @@ while run:
 
     if start_game == False:
         #draw main menu
-        screen.fill(bgd)
+        screen.fill(BGD_COLOUR)
         if start_button.draw(screen):
             start_game = True
             start_opening = True
