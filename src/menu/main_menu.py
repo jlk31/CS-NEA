@@ -21,10 +21,11 @@ def main_menu(screen):
 
     play_button = Button("Play", screen_width - button_width - 20, 20, button_width, button_height, start_game)
     leaderboard_button = Button("Leaderboard", screen_width - button_width - 20, 20 + button_height + spacing, button_width, button_height, show_leaderboard)
+    revision_button = Button("Learn", screen_width - button_width - 20, 20 + 2 * (button_height + spacing), button_width, button_height, start_game)
     quit_button = Button("Quit", screen_width - button_width - 20, 20 + 2 * (button_height + spacing), button_width, button_height, quit_game)
     options_button = Button("Options", 20, screen_height - button_height - 20, button_width, button_height, show_options)
 
-    buttons = [play_button, leaderboard_button, quit_button, options_button]
+    buttons = [play_button, leaderboard_button, revision_button, quit_button, options_button]
 
     running = True
     while running:
