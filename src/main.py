@@ -107,9 +107,7 @@ supply_boxes = {
 }
 
 
-#set up font
 font = pygame.font.SysFont('Arial', 50)
-
 
 #define colours
 BGD_COLOUR = (144, 201, 120)
@@ -128,7 +126,6 @@ def draw_text(text, font, text_col, x, y):
     screen.blit(img, (x, y))
 
 #resetting level
-
 def reset_level():
     global bgd_scroll, screen_scroll, level, player, enemy
     bgd_scroll = 0
