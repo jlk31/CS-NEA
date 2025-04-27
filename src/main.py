@@ -801,6 +801,7 @@ while run:
             bgd_scroll -= screen_scroll
             screen_scroll, level_complete = player.move(moving_left, moving_right)
             if level_complete == True:
+                start_opening = True
                 level += 1
                 bgd_scroll = 0
                 screen_scroll = 0
