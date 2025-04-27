@@ -642,6 +642,9 @@ class Transition():
         self.transition_counter += self.speed
         if self.direction == 1:
             pygame.draw.rect(screen, self.colour, (0 - self.transition_counter, 0, width // 2, height))
+            pygame.draw.rect(screen, self.colour, (width // 2 + self.transition_counter, 0, width, height))
+            pygame.draw.rect(screen, self.colour, (0, 0 - self.transition_counter, width, height // 2))
+            pygame.draw.rect(screen, self.colour, (0, height // 2 + self.transition_counter, width, height))
         if self.direction == 2:
             pygame.draw.rect(screen, self.colour, (0, 0, width, 0 + self.transition_counter))
         if self.transition_counter >= width:
@@ -771,6 +774,7 @@ while run:
             if opening_transition.fade():
                 start_opening = False
                 server_communication('Player has started the game')
+                opening_transition.transition_counter = 0
 
         #update player actions
         if player.alive:
@@ -816,6 +820,8 @@ while run:
             screen_scroll = 0
             if death_transition.fade():
                 if restart_button_img.draw(screen):
+                    death_transition.transition_counter = 0
+                    start_opening = True
                     bgd_scroll = 0
                     level_data = reset_level()
 
