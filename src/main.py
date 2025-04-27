@@ -27,7 +27,7 @@ import threading
 import button
 
 #================================================================================
-#parameters
+#main game parameters
 #================================================================================
 
 #initialising pygame
@@ -55,6 +55,7 @@ MAX_LEVEL = 5
 column_counter = 150
 level = 1
 start_game = False
+start_opening = False
 
 
 #================================================================================
@@ -116,6 +117,7 @@ RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (200, 200, 200)
+
 
 
 #define the font
@@ -625,6 +627,32 @@ class Plasma_Explosion(pygame.sprite.Sprite):
                 self.image = self.images[self.frame_index]
 
 #================================================================
+#screen transition class
+#================================================================        
+
+class Transition():
+    def __init__(self, direction, colour, speed):
+        self.direction = direction
+        self.colour = colour
+        self.speed = speed
+        self.transition_counter = 0
+
+    def fade(self):
+        fade_complete = False
+        self.transition_counter += self.speed
+        if self.direction == 1:
+            pygame.draw.rect(screen, self.colour, (0 - self.transition_counter, 0, width // 2, height))
+        if self.direction == 2:
+            pygame.draw.rect(screen, self.colour, (0, 0, width, 0 + self.transition_counter))
+        if self.transition_counter >= width:
+            fade_complete = True
+
+        return fade_complete
+
+opening_transition = Transition(1, BLACK, 4)
+death_transition = Transition(2, RED, 4)
+
+#================================================================
 #create buttons
 #================================================================
 
@@ -694,6 +722,7 @@ while run:
         screen.fill(bgd)
         if start_button.draw(screen):
             start_game = True
+            start_opening = True
             server_communication('Player has started the game')
         if exit_button.draw(screen):
             run = False
@@ -737,6 +766,11 @@ while run:
         plasma_explosion_group.draw(screen)
         supply_box_group.draw(screen)
         exit_group.draw(screen)
+        
+        if start_opening == True:
+            if opening_transition.fade():
+                start_opening = False
+                server_communication('Player has started the game')
 
         #update player actions
         if player.alive:
@@ -780,17 +814,18 @@ while run:
                     player = level.process_data(level_data)
         else:
             screen_scroll = 0
-            if restart_button_img.draw(screen):
-                bgd_scroll = 0
-                level_data = reset_level()
+            if death_transition.fade():
+                if restart_button_img.draw(screen):
+                    bgd_scroll = 0
+                    level_data = reset_level()
 
-                with open(f'level{level}_data.csv', newline='') as csv:
-                    reader = csv.reader(csv, delimiter=',')
-                    for x, row in enumerate(reader):
-                        for y, tile in enumerate(row):
-                            level_data[x][y] = int(tile)
-                level = Level()
-                player = level.process_data(level_data)
+                    with open(f'level{level}_data.csv', newline='') as csv:
+                        reader = csv.reader(csv, delimiter=',')
+                        for x, row in enumerate(reader):
+                            for y, tile in enumerate(row):
+                                level_data[x][y] = int(tile)
+                    level = Level()
+                    player = level.process_data(level_data)
 
 #================================================================
 #send player username to server
