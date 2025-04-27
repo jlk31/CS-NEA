@@ -1,5 +1,5 @@
 import pygame
-from button import Button
+from utils.button import Button
 from main import start_game, show_leaderboard, quit_game, show_options
 
 
