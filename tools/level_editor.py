@@ -129,8 +129,19 @@ while run:
     draw_text(f'Level: {mission}', font, WHITE, 10, height + low_margin - 90)
     draw_text('Press W or S to change mission', font, WHITE, 10, height + low_margin - 90)
 
-    save_button.draw(screen)
-    load_button.draw(screen)
+    if save_button.draw(screen):
+        with open(f'level{mission}_data.csv', 'w', newline='') as csvfile:
+            writer = csv.writer(csvfile, delimiter=',')
+            for row in level_data:
+                writer.writerow(row)
+    if load_button.draw(screen):
+        screen_scroll = 0
+        with open(f'level{mission}_data.csv', newline='') as csvfile:
+            reader = csv.writer(csvfile, delimiter=',')
+            for row in level_data:
+                for x, row in enumerate(reader):
+                    for y, tile in enumerate(row):
+                        level_data[x][y] = int(tile)
 
 #===============================================================================
 #draw tile panel
