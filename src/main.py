@@ -78,17 +78,13 @@ plasma_grenade = False
 plasma_grenade_is_thrown = False
 
 #================================================================================
-#load images
+#load images and store in lists
 #================================================================================
 
 start_button_img = pygame.image.load('assets/buttons/start.png').convert_alpha()
 exit_button_img = pygame.image.load('assets/buttons/exit.png').convert_alpha()
 restart_button_img = pygame.image.load('assets/buttons/restart.png').convert_alpha()
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
-
-#================================================================================
-#store tile images in list
-#================================================================================
 
 img_list = []
 for i in range(tile_variant):
