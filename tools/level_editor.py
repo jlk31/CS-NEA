@@ -56,6 +56,14 @@ for i in range(TILE_VARIANTS):
     img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
     img_list.append(img)
 
+level_data = []
+for row in range(ROW_COUNTER):
+    r = [-1] * COLUMN_COUNTER
+    level_data.append(r)
+
+for tile in range(0, COLUMN_COUNTER):
+    level_data[ROW_COUNTER - 1][tile] = 0
+
 def draw_bgd():
     screen.fill(BLACK)
     width = space_img.get_width()
@@ -67,6 +75,12 @@ def draw_grid():
         pygame.draw.line(screen, WHITE, (c * TILE_MAGNITUIDE - screen_scroll, 0), (c * TILE_MAGNITUIDE - screen_scroll, height))
     for r in range(ROW_COUNTER + 1):
         pygame.draw.line(screen, WHITE, (0, r * TILE_MAGNITUIDE), (width, r * TILE_MAGNITUIDE))
+
+def draw_level():
+    for x, row in enumerate(level_data):
+        for y, tile in enumerate(row):
+            if tile >= 0:
+                screen.blit(img_list[0], (x * TILE_MAGNITUIDE - screen_scroll, y * TILE_MAGNITUIDE)) 
 
 #===============================================================================
 #create buttons
@@ -94,6 +108,7 @@ while run:
     sys_clock.tick(FPS)
     draw_bgd()
     draw_grid()
+    draw_level()
 
 #===============================================================================
 #draw tile panel
@@ -117,6 +132,17 @@ if screen_scroll_left and screen_scroll > 0:
 if screen_scroll_right:
     screen_scroll += 5 * screen_scroll_speed
 
+#===============================================================================
+#convert mouse position to tile position
+#===============================================================================
+
+    pos = pygame.mouse.get_pos()
+    x = (pos[0] + screen_scroll) // TILE_MAGNITUIDE
+    y = pos[1] // TILE_MAGNITUIDE
+    if pos[0] < width and pos[1] < height:
+        if pygame.mouse.get_pressed()[0] == 1:
+            if level_data[y][x] != selected_tile:
+                level_data[y][x] = selected_tile
 
 #================================================================================
 #event handler
