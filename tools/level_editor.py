@@ -30,6 +30,7 @@ ROW_COUNTER = 16
 COLUMN_COUNTER = 150
 TILE_MAGNITUIDE = height // ROW_COUNTER
 TILE_VARIANTS = 6
+mission = 0
 selected_tile = 0
 screen_scroll_left = False
 screen_scroll_right = False
@@ -44,6 +45,12 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 
+#===============================================================================
+#define font(s)
+#===============================================================================
+
+font = pygame.font.SysFont('Arial', 30)
+
 #================================================================================
 #load images
 #================================================================================
@@ -56,6 +63,9 @@ for i in range(TILE_VARIANTS):
     img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
     img_list.append(img)
 
+save_img = pygame.image.load('assets/save_button.png').convert_alpha()
+load_img = pygame.image.load('assets/load_button.png').convert_alpha()
+
 level_data = []
 for row in range(ROW_COUNTER):
     r = [-1] * COLUMN_COUNTER
@@ -63,6 +73,10 @@ for row in range(ROW_COUNTER):
 
 for tile in range(0, COLUMN_COUNTER):
     level_data[ROW_COUNTER - 1][tile] = 0
+
+def draw_text(text, font, color, surface, x, y):
+    img = font.render(text, True, color)
+    screen.blit(img, (x, y))
 
 def draw_bgd():
     screen.fill(BLACK)
@@ -80,11 +94,14 @@ def draw_level():
     for x, row in enumerate(level_data):
         for y, tile in enumerate(row):
             if tile >= 0:
-                screen.blit(img_list[0], (x * TILE_MAGNITUIDE - screen_scroll, y * TILE_MAGNITUIDE)) 
+                screen.blit(img_list[tile], (x * TILE_MAGNITUIDE - screen_scroll, y * TILE_MAGNITUIDE)) 
 
 #===============================================================================
 #create buttons
 #===============================================================================
+
+save_button = Button(width // 2, height + low_margin - 50, save_img, None)
+load_button = Button(width // 2 + 200, height + low_margin - 50, load_img, None)
 
 button_list = []
 button_column = 0
@@ -109,6 +126,11 @@ while run:
     draw_bgd()
     draw_grid()
     draw_level()
+    draw_text(f'Level: {mission}', font, WHITE, 10, height + low_margin - 90)
+    draw_text('Press W or S to change mission', font, WHITE, 10, height + low_margin - 90)
+
+    save_button.draw(screen)
+    load_button.draw(screen)
 
 #===============================================================================
 #draw tile panel
@@ -129,7 +151,7 @@ pygame.draw.rect(screen, RED, button_list[selected_tile].rect, 3)
 
 if screen_scroll_left and screen_scroll > 0:
     screen_scroll -= 5 * screen_scroll_speed
-if screen_scroll_right:
+if screen_scroll_right and screen_scroll < (COLUMN_COUNTER * TILE_MAGNITUIDE) - width:
     screen_scroll += 5 * screen_scroll_speed
 
 #===============================================================================
@@ -143,6 +165,8 @@ if screen_scroll_right:
         if pygame.mouse.get_pressed()[0] == 1:
             if level_data[y][x] != selected_tile:
                 level_data[y][x] = selected_tile
+        if pygame.mouse.get_pressed()[2] == 1:
+            level_data[y][x] = -1
 
 #================================================================================
 #event handler
@@ -158,6 +182,10 @@ if screen_scroll_right:
                 screen_scroll_right = True
             if event.key == pygame.K_LSHIFT:
                 screen_scroll_speed = 5
+            if event.key == pygame.K_w:
+                mission += 1
+            if event.key == pygame.K_s and mission > 0:
+                mission -= 1
             
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
