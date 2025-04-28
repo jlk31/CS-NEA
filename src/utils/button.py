@@ -1,29 +1,31 @@
-import pygame
+import pygame 
 
-class Button:
-    def __init__(self, x, y, width, height, text, font, text_color, button_color, hover_color):
-        self.rect = pygame.Rect(x, y, width, height)
-        self.text = text
-        self.font = font
-        self.text_color = text_color
-        self.button_color = button_color
-        self.hover_color = hover_color
-        self.is_hovered = False
+#button class
+class Button():
+	def __init__(self,x, y, image, scale):
+		width = image.get_width()
+		height = image.get_height()
+		self.image = pygame.transform.scale(image, (int(width * scale), int(height * scale)))
+		self.rect = self.image.get_rect()
+		self.rect.topleft = (x, y)
+		self.clicked = False
 
-    def draw(self, screen):
-        # Change color if hovered
-        color = self.hover_color if self.is_hovered else self.button_color
-        pygame.draw.rect(screen, color, self.rect)
+	def draw(self, surface):
+		action = False
 
-        # Render text
-        text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
+		#get mouse position
+		pos = pygame.mouse.get_pos()
 
-    def update(self, mouse_pos):
-        # Check if the mouse is over the button
-        self.is_hovered = self.rect.collidepoint(mouse_pos)
+		#check mouseover and clicked conditions
+		if self.rect.collidepoint(pos):
+			if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+				action = True
+				self.clicked = True
 
-    def is_clicked(self, mouse_pos, mouse_pressed):
-        # Check if the button is clicked
-        return self.is_hovered and mouse_pressed[0]
+		if pygame.mouse.get_pressed()[0] == 0:
+			self.clicked = False
+
+		#draw button
+		surface.blit(self.image, (self.rect.x, self.rect.y))
+
+		return action

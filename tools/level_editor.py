@@ -29,6 +29,7 @@ pygame.display.set_caption("Cosmic Survivor level editor")
 ROW_COUNTER = 16
 COLUMN_COUNTER = 150
 TILE_MAGNITUIDE = height // ROW_COUNTER
+TILE_VARIANTS = 6
 screen_scroll_left = False
 screen_scroll_right = False
 screen_scroll = 0
@@ -48,6 +49,12 @@ BLACK = (0, 0, 0)
 #================================================================================
 
 space_img = pygame.image.load('assets/background/space.png').convert_alpha()
+
+img_list = []
+for i in range(TILE_VARIANTS):
+    img = pygame.image.load(f'assets/tiles/{i}.png').convert_alpha()
+    img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
+    img_list.append(img)
 
 def draw_bgd():
     screen.fill(BLACK)

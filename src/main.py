@@ -49,7 +49,7 @@ GRAVITY_UNI = 1.00
 SCROLL_THRESH = 200
 screen_scroll = 0
 bgd_scroll = 0
-tile_variant = 6
+TILE_VARIANTS = 6
 ROW_COUNTER = 16
 TILE_MAGNITUDE = height // ROW_COUNTER
 MAX_LEVEL = 5
@@ -86,7 +86,7 @@ restart_button_img = pygame.image.load('assets/buttons/restart.png').convert_alp
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 
 img_list = []
-for i in range(tile_variant):
+for i in range(TILE_VARIANTS):
     img = pygame.image.load(f'assets/levels/tiles/{i}.png')
     img = pygame.transform.scale(img, (TILE_MAGNITUDE, TILE_MAGNITUDE))
     img_list.append(img)
