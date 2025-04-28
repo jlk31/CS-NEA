@@ -24,7 +24,7 @@ low_margin = 100
 side_margin = 300
 
 screen = pygame.display.set_mode((width + side_margin, height + low_margin))
-pygame.display.set_caption("Cosmic Survivor level editor")
+pygame.display.set_caption("Cosmic Survivor mission editor")
 ROW_COUNTER = 16
 COLUMN_COUNTER = 150
 TILE_MAGNITUIDE = height // ROW_COUNTER
