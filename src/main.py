@@ -13,7 +13,7 @@
 #line numbers will change as program is amended/tested/updated
 
 #===============================================================================
-#Modules being imported
+#modules being imported
 #===============================================================================
 
 import pygame

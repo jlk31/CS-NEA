@@ -2,7 +2,7 @@
 #https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/non-exam-assessment-administration
 
 #===============================================================================
-#Modules being imported
+#modules being imported
 #===============================================================================
 
 import pygame
