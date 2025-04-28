@@ -7,7 +7,6 @@
 
 import pygame
 from src.utils.button import Button
-import pickle
 import csv
 
 #================================================================================
