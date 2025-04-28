@@ -6,7 +6,7 @@
 #===============================================================================
 
 import pygame
-from utils.button import Button
+from src.utils.button import Button
 import pickle
 import csv
 
@@ -30,6 +30,7 @@ ROW_COUNTER = 16
 COLUMN_COUNTER = 150
 TILE_MAGNITUIDE = height // ROW_COUNTER
 TILE_VARIANTS = 6
+selected_tile = 0
 screen_scroll_left = False
 screen_scroll_right = False
 screen_scroll = 0
@@ -39,7 +40,6 @@ screen_scroll_speed = 1
 #define colors
 #================================================================================
 
-GREEN = (0, 255, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 BLACK = (0, 0, 0)
@@ -68,6 +68,22 @@ def draw_grid():
     for r in range(ROW_COUNTER + 1):
         pygame.draw.line(screen, WHITE, (0, r * TILE_MAGNITUIDE), (width, r * TILE_MAGNITUIDE))
 
+#===============================================================================
+#create buttons
+#===============================================================================
+
+button_list = []
+button_column = 0
+button_row = 0
+
+for j in range(len(img_list)):
+    button = button.Button(width + (75 * button_column) + 50, (75 * button_row) + 50, img_list[j], None)
+    button_list.append(button)
+    button_column += 1
+    if button_column == 3:
+        button_row += 1
+        button_column = 0
+
 #================================================================================
 #main game loop
 #================================================================================
@@ -78,6 +94,19 @@ while run:
     sys_clock.tick(FPS)
     draw_bgd()
     draw_grid()
+
+#===============================================================================
+#draw tile panel
+#===============================================================================
+
+pygame.draw.rect(screen, BLACK, (width, 0, side_margin, height))
+
+button_counter = 0
+for button_counter, x in enumerate(button_list):
+    if x.draw(screen):
+        selected_tile = button_counter
+
+pygame.draw.rect(screen, RED, button_list[selected_tile].rect, 3)
 
 #================================================================================
 #map scrolling
