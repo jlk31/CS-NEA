@@ -1,15 +1,6 @@
 #pip install pygame -pre
 #https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/non-exam-assessment-administration
 
-#Non-SQL table access ------------- 
-#Dictionary defined --------------- 
-#Generation of objects(OOP) ------- 
-#Simple user defined algorithms --- 
-#Writing and reading from files --- 
-#Simple OOP model -----------------
-#Recursive algorithms ------------- 
-#List operations ------------------
-
 #===============================================================================
 #Modules being imported
 #===============================================================================
@@ -35,18 +26,37 @@ side_margin = 300
 
 screen = pygame.display.set_mode((width + side_margin, height + low_margin))
 pygame.display.set_caption("Cosmic Survivor level editor")
+ROW_COUNTER = 16
+MAX_COLS = 150
+TILE_MAGNITUIDE = height // ROWS
+screen_scroll_left = False
+screen_scroll_right = False
+screen_scroll = 0
+screen_scroll_speed = 1
+
+#================================================================================
+#define colors
+#================================================================================
+
+GREEN = (0, 255, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLACK = (0, 0, 0)
 
 #================================================================================
 #load images
 #================================================================================
 
-space_img = pygame.image.load('assets/space.png').convert_alpha()
+space_img = pygame.image.load('assets/background/space.png').convert_alpha()
 
 def draw_bgd():
-    screen.blit(space_img, (0, 0))
-    pygame.draw.rect(screen, (0, 0, 0), (0, 0, width + side_margin, height + low_margin), 2)
-    pygame.draw.rect(screen, (255, 255, 255), (side_margin - 5, 0, side_margin - 5, height + low_margin), 2)
-    pygame.draw.rect(screen, (255, 255, 255), (0, height - low_margin + 5, width + side_margin - 5, low_margin - 5), 2)
+    screen.fill(BLACK)
+    width = space_img.get_width()
+    for i in range(4):
+        screen.blit(space_img, ((i * width) - screen_scroll, 0))
+
+def draw_grid():
+
 
 #================================================================================
 #main game loop
@@ -59,12 +69,38 @@ while run:
     draw_bgd()
 
 #================================================================================
+#map scrolling
+#================================================================================
+
+if screen_scroll_left and screen_scroll > 0:
+    screen_scroll -= 5 * screen_scroll_speed
+if screen_scroll_right:
+    screen_scroll += 5 * screen_scroll_speed
+
+
+#================================================================================
 #event handler
 #================================================================================
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_a:
+                screen_scroll_left = True
+            if event.key == pygame.K_d:
+                screen_scroll_right = True
+            if event.key == pygame.K_LSHIFT:
+                screen_scroll_speed = 5
+            
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                screen_scroll_left = False
+            if event.key == pygame.K_d:
+                screen_scroll_right = False
+            if event.key == pygame.K_LSHIFT:
+                screen_scroll_speed = 1
         
+    pygame.display.update()
 
 pygame.quit()

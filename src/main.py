@@ -43,7 +43,6 @@ width = 800
 height = int(width * 0.8)
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption('Cosmic Survivor')
-#define game variables
 HOST = '127.0.0.1'
 PORT = 65432
 GRAVITY_UNI = 1.00
@@ -51,10 +50,10 @@ SCROLL_THRESH = 200
 screen_scroll = 0
 bgd_scroll = 0
 tile_variant = 6
-row_counter = 16
-tile_magnitude = height // row_counter
+ROW_COUNTER = 16
+TILE_MAGNITUDE = height // ROW_COUNTER
 MAX_LEVEL = 5
-column_counter = 150
+COLUMN_COUNTER = 150
 level = 1
 start_game = False
 start_opening = False
@@ -89,7 +88,7 @@ space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 img_list = []
 for i in range(tile_variant):
     img = pygame.image.load(f'assets/levels/tiles/{i}.png')
-    img = pygame.transform.scale(img, (tile_magnitude, tile_magnitude))
+    img = pygame.transform.scale(img, (TILE_MAGNITUDE, TILE_MAGNITUDE))
     img_list.append(img)
 
 health_img = pygame.image.load('assets/levels/health.png').convert_alpha()
@@ -107,7 +106,10 @@ supply_boxes = {
 
 font = pygame.font.SysFont('Arial', 50)
 
+#================================================================================
 #define colours
+#================================================================================
+
 BGD_COLOUR = (144, 201, 120)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
@@ -142,8 +144,8 @@ def reset_level():
 
 #creating list of empty tiles
     data = []
-    for row in range(row_counter):
-        r = [-1] * column_counter
+    for row in range(ROW_COUNTER):
+        r = [-1] * COLUMN_COUNTER
         print(r)
         data.append(r)
 
@@ -305,7 +307,7 @@ class Soldier(pygame.sprite.Sprite):
 
         #update scroll based on player's position
         if self.char_type == 'player':
-            if (self.rect.right < width - SCROLL_THRESH and bgd_scroll < (level.level_length * tile_magnitude) - width) or (self.rect.left < SCROLL_THRESH and bgd_scroll > abs(dx)):
+            if (self.rect.right < width - SCROLL_THRESH and bgd_scroll < (level.level_length * TILE_MAGNITUDE) - width) or (self.rect.left < SCROLL_THRESH and bgd_scroll > abs(dx)):
                 self.rect.x -= dx
                 screen_scroll = -dx
 
@@ -343,7 +345,7 @@ class Soldier(pygame.sprite.Sprite):
                 self.fov.center = (self.rect.centerx + 75 * self.direction, self.rect.centery)
 
 
-                if self.move_index > tile_magnitude:
+                if self.move_index > TILE_MAGNITUDE:
                     self.direction *= -1
                     self.move_index *= -1
                 else:
@@ -409,22 +411,22 @@ class Level():
                 if tile >= 0:
                     img = img_list[tile]
                     img_rect = img.get_rect()
-                    img_rect.x = x * tile_magnitude
-                    img_rect.y = y * tile_magnitude
+                    img_rect.x = x * TILE_MAGNITUDE
+                    img_rect.y = y * TILE_MAGNITUDE
                     tile_data = (img, img_rect)
                     if tile >= 0 and tile <= 4:
                         self.obstacle_list.append(tile_data)
                     elif tile >= 5:
-                        supply_box = supply_box('Med', x * tile_magnitude, y * tile_magnitude)
+                        supply_box = supply_box('Med', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
                     elif tile >= 6:
-                        supply_box = supply_box('Laser', x * tile_magnitude, y * tile_magnitude)
+                        supply_box = supply_box('Laser', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
                     elif tile >= 7:
-                        supply_box = supply_box('Plasma Grenade', x * tile_magnitude, y * tile_magnitude)
+                        supply_box = supply_box('Plasma Grenade', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
                     elif tile == 8:
-                        exit = Exit(img, x * tile_magnitude, y * tile_magnitude)
+                        exit = Exit(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         exit_group.add(exit)
             
         return player
@@ -443,7 +445,7 @@ class Exit(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
         self.rect = self.image.get_rect()
-        self.rect.midtop = (x + tile_magnitude // 2, y + (tile_magnitude - self.image.get_height()))
+        self.rect.midtop = (x + TILE_MAGNITUDE // 2, y + (TILE_MAGNITUDE - self.image.get_height()))
 
 #================================================================================
 #supply box class
@@ -455,7 +457,7 @@ class SupplyBox(pygame.sprite.Sprite):
         self.item_type = item_type
         self.image = supply_boxes[self.item_type]
         self.rect = self.image.get_rect()
-        self.rect.midtop = (x + tile_magnitude // 2, y + (tile_magnitude - self.image.get_height()))
+        self.rect.midtop = (x + TILE_MAGNITUDE // 2, y + (TILE_MAGNITUDE - self.image.get_height()))
 
 
     def update(self):
@@ -575,12 +577,12 @@ class Plasma_Grenade(pygame.sprite.Sprite):
             plasma_explosion = Plasma_Explosion(self.rect.x, self.rect.y, 0.5)
             plasma_explosion_group.add(plasma_explosion)
             #damage soldiers nearby (player + enemy)
-            if abs(self.rect.centerx - player.rect.centerx) < tile_magnitude * 2 and \
-                abs(self.rect.centery - player.rect.centery) < tile_magnitude * 2:
+            if abs(self.rect.centerx - player.rect.centerx) < TILE_MAGNITUDE * 2 and \
+                abs(self.rect.centery - player.rect.centery) < TILE_MAGNITUDE * 2:
                 player.health -= 75
             for enemy_soldier in enemy_soldier_group:
-               if abs(self.rect.centerx - enemy.rect.centerx) < tile_magnitude * 2 and \
-                abs(self.rect.centery - enemy.rect.centery) < tile_magnitude * 2:
+               if abs(self.rect.centerx - enemy.rect.centerx) < TILE_MAGNITUDE * 2 and \
+                abs(self.rect.centery - enemy.rect.centery) < TILE_MAGNITUDE * 2:
                 enemy.health -= 75
                 print(enemy.health)
 
@@ -710,8 +712,8 @@ scale = 3
 #================================================================
 
 level_data = []
-for row in range(row_counter):
-    r = [-1] * column_counter
+for row in range(ROW_COUNTER):
+    r = [-1] * COLUMN_COUNTER
     print(r)
     level_data.append(r)
 
