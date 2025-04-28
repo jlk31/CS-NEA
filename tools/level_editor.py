@@ -27,8 +27,8 @@ side_margin = 300
 screen = pygame.display.set_mode((width + side_margin, height + low_margin))
 pygame.display.set_caption("Cosmic Survivor level editor")
 ROW_COUNTER = 16
-MAX_COLS = 150
-TILE_MAGNITUIDE = height // ROWS
+COLUMN_COUNTER = 150
+TILE_MAGNITUIDE = height // ROW_COUNTER
 screen_scroll_left = False
 screen_scroll_right = False
 screen_scroll = 0
@@ -56,7 +56,10 @@ def draw_bgd():
         screen.blit(space_img, ((i * width) - screen_scroll, 0))
 
 def draw_grid():
-
+    for c in range(COLUMN_COUNTER + 1):
+        pygame.draw.line(screen, WHITE, (c * TILE_MAGNITUIDE - screen_scroll, 0), (c * TILE_MAGNITUIDE - screen_scroll, height))
+    for r in range(ROW_COUNTER + 1):
+        pygame.draw.line(screen, WHITE, (0, r * TILE_MAGNITUIDE), (width, r * TILE_MAGNITUIDE))
 
 #================================================================================
 #main game loop
@@ -67,6 +70,7 @@ while run:
     
     sys_clock.tick(FPS)
     draw_bgd()
+    draw_grid()
 
 #================================================================================
 #map scrolling
