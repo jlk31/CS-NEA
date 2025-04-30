@@ -26,6 +26,7 @@ from utils.button import Button
 from menu.base_state import BaseState
 from menu.login_state import LoginState
 from menu.menu import MainMenuState
+from menu.game_state import GameState
 
 #================================================================================
 #main game parameters
@@ -190,6 +191,7 @@ restart_button = Button(300, 400, restart_button_img, 1)
 states = {
     "login": LoginState(screen),
     "main_menu": MainMenuState(screen, play_button_img, quit_button_img),
+    "game": GameState(screen, None, None, None),
 }
 
 current_state = "login"
@@ -461,6 +463,8 @@ class Level():
             tile[1][0] += screen_scroll
             screen.blit(tile[0], tile[1])
 
+        return player
+
 #================================================================================
 #exit class
 #================================================================================
@@ -678,14 +682,6 @@ opening_transition = Transition(1, BLACK, 4)
 death_transition = Transition(2, RED, 4)
 
 #================================================================
-#create buttons
-#================================================================
-
-#================================================================
-#handle login screen logic
-#================================================================
-
-#================================================================
 #create sprite groups
 #================================================================
 
@@ -732,6 +728,8 @@ with open(f'level{level}_data.csv', newline='') as csvfile:
 level = Level()
 player = level.process_data(level_data)
 
+states["game"] = GameState(screen, level, player, level_data)
+
 #================================================================
 #main game loop
 #================================================================
@@ -744,9 +742,15 @@ while run:
 
     events = pygame.event.get()
     next_state = states[current_state].event_handler(events)
+
     if next_state:
         current_state = next_state
         continue
+
+    if current_state == "game":
+        state.update(moving_left, moving_right, shoot, plasma_grenade)
+        state.render()
+
     states[current_state].update()
     states[current_state].render()
 
@@ -777,15 +781,19 @@ while run:
         else:
             screen.fill(BGD_COLOUR)
             if play_button.draw(screen):
-                mission_number = 0
+                print("Play button pressed")
+                mission_number = 1
                 if load_mission(mission_number):
+                    print(f"Mission {mission_number} loaded")
                     start_game = True
                     start_opening = True
+                    current_state = "game"
                 else:
                     print(f"Mission {mission_number} not found!")
             if quit_button.draw(screen):
                 run = False
             
+        print("current_state: ", current_state)
 
 #================================================================================
 #update and draw sprite groups
