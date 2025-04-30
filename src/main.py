@@ -870,7 +870,6 @@ while run:
             if event.key == pygame.K_q:
                 plasma_grenade = False
                 plasma_grenade_is_thrown = False
-        
 
         pygame.display.update()
 
