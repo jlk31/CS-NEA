@@ -49,7 +49,7 @@ GRAVITY_UNI = 1.00
 SCROLL_THRESH = 200
 screen_scroll = 0
 bgd_scroll = 0
-TILE_VARIANTS = 6
+TILE_VARIANTS = 5
 ROW_COUNTER = 16
 TILE_MAGNITUDE = HEIGHT // ROW_COUNTER
 MAX_LEVEL = 5
@@ -81,7 +81,7 @@ plasma_grenade_is_thrown = False
 
 play_button_img = pygame.image.load('assets/buttons/play_button.png').convert_alpha()
 quit_button_img = pygame.image.load('assets/buttons/quit_button.png').convert_alpha()
-restart_button_img = pygame.image.load('assets/buttons/restart.png').convert_alpha()
+restart_button_img = pygame.image.load('assets/buttons/restart_button.png').convert_alpha()
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 
 img_list = []
@@ -90,15 +90,15 @@ for i in range(TILE_VARIANTS):
     img = pygame.transform.scale(img, (TILE_MAGNITUDE, TILE_MAGNITUDE))
     img_list.append(img)
 
-health_img = pygame.image.load('assets/levels/health.png').convert_alpha()
-laser_img = pygame.image.load('assets/rifle/laser.png').convert_alpha()
+med_img = pygame.image.load('assets/levels/tiles/2.png').convert_alpha()
+laser_img = pygame.image.load('assets/blaster/laser.png').convert_alpha()
 plasma_grenade_img = pygame.image.load('assets/grenade/plasma_grenade.png').convert_alpha()
-med_box_img = pygame.image.load('assets/levels/med_box.png').convert_alpha()
-laser_box_img = pygame.image.load('assets/levels/laser_box.png').convert_alpha()
-plasma_grenade_box_img = pygame.image.load('assets/levels/plasma_grenade_box.png').convert_alpha()
+med_box_img = pygame.image.load('assets/levels/tiles/2.png').convert_alpha()
+plasma_box_img = pygame.image.load('assets/levels/tiles/3.png').convert_alpha()
+plasma_grenade_box_img = pygame.image.load('assets/levels/tiles/4.png').convert_alpha()
 supply_boxes = {
     'Med'               : med_box_img,
-    'Laser'             : laser_box_img,
+    'Laser'             : plasma_box_img,
     'Plasma_grenade'             :plasma_grenade_box_img
 }
 
@@ -154,7 +154,7 @@ def reset_level():
 
 states = {
     "login": LoginState(screen),
-    "main_menu": MainMenuState(screen, start_button_img, exit_button_img),
+    "main_menu": MainMenuState(screen, play_button_img, quit_button_img),
 }
 
 current_state = "login"
@@ -212,7 +212,7 @@ class Soldier(pygame.sprite.Sprite):
 #================================================================
 
         #load all images for the players
-        animation_types = ['Idle', 'Run', 'Jump', 'Death']
+        animation_types = ['idle', 'run', 'jump', 'death']
         #0: idle, 1:run, 2:jump, 3:death
         for animation in animation_types:
             #reset temporary list of images
@@ -663,27 +663,9 @@ death_transition = Transition(2, RED, 4)
 #create buttons
 #================================================================
 
-main_menu = MainMenu(WIDTH, HEIGHT, play_button_img, quit_button_img)
-login_screen = LoginScreen(WIDTH, HEIGHT)
-start_button = main_menu.get_start_button()
-exit_button = main_menu.get_exit_button()
-login_button = login_screen.get_login_button()
-
 #================================================================
 #handle login screen logic
 #================================================================
-
-if not login_screen.is_logged_in():
-    while not login_screen.is_logged_in():
-        login_screen.draw(screen)
-        pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            login_screen.handle_event(event)
-exit_button = Button(WIDTH // 2 - 110, HEIGHT // 2 + 50, quit_button_img, 1)
-restart_button = Button(WIDTH // 2 - 100, HEIGHT // 2 - 50, restart_button_img, 2)
 
 #================================================================
 #create sprite groups
@@ -766,7 +748,7 @@ while run:
         #show health count
         draw_text('HEALTH: ', font, WHITE, 15, 20)
         for x in range(player.max_health):
-            screen.blit(health_img, (100 + (x * 20, 25)))
+            screen.blit(med_box_img, (100 + (x * 20, 25)))
         #show ammo count
         draw_text('AMMO: ', font, WHITE, 15, 30)
         for x in range(player.ammo):
