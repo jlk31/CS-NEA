@@ -25,8 +25,8 @@ import csv
 import socket
 import threading
 from utils.button import Button
-from menu.main_menu import MainMenu
-from menu.login_screen import LoginScreen
+from menu.login_state import LoginState
+from menu.menu import MainMenuState
 
 #================================================================================
 #main game parameters
@@ -39,9 +39,9 @@ pygame.init()
 FPS = 60
 sys_clock = pygame.time.Clock()
 #set screen resolution and program caption
-width = 800
-height = int(width * 0.8)
-screen = pygame.display.set_mode((width, height))
+WIDTH = 800
+HEIGHT = int(WIDTH * 0.8)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Cosmic Survivor')
 HOST = '127.0.0.1'
 PORT = 65432
@@ -51,13 +51,12 @@ screen_scroll = 0
 bgd_scroll = 0
 TILE_VARIANTS = 6
 ROW_COUNTER = 16
-TILE_MAGNITUDE = height // ROW_COUNTER
+TILE_MAGNITUDE = HEIGHT // ROW_COUNTER
 MAX_LEVEL = 5
 COLUMN_COUNTER = 150
 level = 1
 start_game = False
 start_opening = False
-
 
 #================================================================================
 #draw background subroutine
@@ -65,9 +64,9 @@ start_opening = False
 
 def draw_bgd():
     screen.fill(BGD_COLOUR)
-    width = space_img.get_width()
+    WIDTH = space_img.get_width()
     for j in range(5):  
-        screen.blit(space_img, ((j * width) - bgd_scroll, 0))
+        screen.blit(space_img, ((j * WIDTH) - bgd_scroll, 0))
 
 #define player action variables
 moving_left = False
@@ -80,8 +79,8 @@ plasma_grenade_is_thrown = False
 #load images and store in lists
 #================================================================================
 
-start_button_img = pygame.image.load('assets/buttons/start.png').convert_alpha()
-exit_button_img = pygame.image.load('assets/buttons/exit.png').convert_alpha()
+play_button_img = pygame.image.load('assets/buttons/play_button.png').convert_alpha()
+quit_button_img = pygame.image.load('assets/buttons/quit_button.png').convert_alpha()
 restart_button_img = pygame.image.load('assets/buttons/restart.png').convert_alpha()
 space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
 
@@ -116,8 +115,6 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (200, 200, 200)
 
-
-
 #define the font
 font = pygame.font.SysFont('Futura', 30)
 
@@ -151,6 +148,16 @@ def reset_level():
 
     return data
 
+#================================================================================
+#state management
+#================================================================================
+
+states = {
+    "login": LoginState(screen),
+    "main_menu": MainMenuState(screen, start_button_img, exit_button_img),
+}
+
+current_state = "login"
 
 #================================================================================
 #server connection
@@ -218,8 +225,8 @@ class Soldier(pygame.sprite.Sprite):
                 temp_list.append(img)
             self.animation_list.append(temp_list)
             
-        self.img = self.animation_list[self.action][self.frame_index] 
-        self.rect = self.img.get_rect()
+        self.image = self.animation_list[self.action][self.frame_index] 
+        self.rect = self.image.get_rect()
         self.rect.center = (x, y)    
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -284,7 +291,7 @@ class Soldier(pygame.sprite.Sprite):
             self.in_air = False
 
         #check if player has fallen off the map
-        if self.rect.bottom > height:
+        if self.rect.bottom > HEIGHT:
             self.health = 0
             self.update_action(3)
 
@@ -298,7 +305,7 @@ class Soldier(pygame.sprite.Sprite):
 
         #check if player has left the screen
         if self.char_type == 'player':
-            if self.rect.left + dx < 0 or self.rect.right + dx > width:
+            if self.rect.left + dx < 0 or self.rect.right + dx > WIDTH:
                 dx = 0
 
         #update rectangle position
@@ -307,7 +314,7 @@ class Soldier(pygame.sprite.Sprite):
 
         #update scroll based on player's position
         if self.char_type == 'player':
-            if (self.rect.right < width - SCROLL_THRESH and bgd_scroll < (level.level_length * TILE_MAGNITUDE) - width) or (self.rect.left < SCROLL_THRESH and bgd_scroll > abs(dx)):
+            if (self.rect.right < WIDTH - SCROLL_THRESH and bgd_scroll < (level.level_length * TILE_MAGNITUDE) - WIDTH) or (self.rect.left < SCROLL_THRESH and bgd_scroll > abs(dx)):
                 self.rect.x -= dx
                 screen_scroll = -dx
 
@@ -499,7 +506,7 @@ class Laser(pygame.sprite.Sprite):
         #give the laser motion
         self.rect.x += (self.direction * self.speed) + screen_scroll
         #check if laser has left the screen
-        if self.rect.right < 0 or self.rect.left > width:
+        if self.rect.right < 0 or self.rect.left > WIDTH:
             self.kill()
 
         #level collision checking
@@ -562,7 +569,7 @@ class Plasma_Grenade(pygame.sprite.Sprite):
             self.speed = 0
 
         #check if plasma grenade has made contact with horizontal borders
-        if self.rect.left + dx < 0 or self.rect.left + dx > width:
+        if self.rect.left + dx < 0 or self.rect.left + dx > WIDTH:
             self.direction *= -1
             dx = self.direction * self.speed
 
@@ -638,13 +645,13 @@ class Transition():
         fade_complete = False
         self.transition_counter += self.speed
         if self.direction == 1:
-            pygame.draw.rect(screen, self.colour, (0 - self.transition_counter, 0, width // 2, height))
-            pygame.draw.rect(screen, self.colour, (width // 2 + self.transition_counter, 0, width, height))
-            pygame.draw.rect(screen, self.colour, (0, 0 - self.transition_counter, width, height // 2))
-            pygame.draw.rect(screen, self.colour, (0, height // 2 + self.transition_counter, width, height))
+            pygame.draw.rect(screen, self.colour, (0 - self.transition_counter, 0, WIDTH // 2, HEIGHT))
+            pygame.draw.rect(screen, self.colour, (WIDTH // 2 + self.transition_counter, 0, WIDTH, HEIGHT))
+            pygame.draw.rect(screen, self.colour, (0, 0 - self.transition_counter, WIDTH, HEIGHT // 2))
+            pygame.draw.rect(screen, self.colour, (0, HEIGHT // 2 + self.transition_counter, WIDTH, HEIGHT))
         if self.direction == 2:
-            pygame.draw.rect(screen, self.colour, (0, 0, width, 0 + self.transition_counter))
-        if self.transition_counter >= width:
+            pygame.draw.rect(screen, self.colour, (0, 0, WIDTH, 0 + self.transition_counter))
+        if self.transition_counter >= WIDTH:
             fade_complete = True
 
         return fade_complete
@@ -656,8 +663,8 @@ death_transition = Transition(2, RED, 4)
 #create buttons
 #================================================================
 
-main_menu = MainMenu(width, height, start_button_img, exit_button_img)
-login_screen = LoginScreen(width, height)
+main_menu = MainMenu(WIDTH, HEIGHT, play_button_img, quit_button_img)
+login_screen = LoginScreen(WIDTH, HEIGHT)
 start_button = main_menu.get_start_button()
 exit_button = main_menu.get_exit_button()
 login_button = login_screen.get_login_button()
@@ -675,8 +682,8 @@ if not login_screen.is_logged_in():
                 pygame.quit()
                 sys.exit()
             login_screen.handle_event(event)
-exit_button = button.Button(width // 2 - 110, height // 2 + 50, exit_button_img, 1)
-restart_button = button.Button(width // 2 - 100, height // 2 - 50, restart_button_img, 2)
+exit_button = Button(WIDTH // 2 - 110, HEIGHT // 2 + 50, quit_button_img, 1)
+restart_button = Button(WIDTH // 2 - 100, HEIGHT // 2 - 50, restart_button_img, 2)
 
 #================================================================
 #create sprite groups
@@ -734,6 +741,13 @@ run = True
 while run:
 
     sys_clock.tick(FPS)
+
+    next_state = states[current_state].handle_events(events)
+    if next_state:
+        current_state = next_state
+
+    states[current_state].update()
+    states[current_state].render()
 
     if start_game == False:
         #draw main menu
