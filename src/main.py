@@ -22,8 +22,6 @@ import os
 import sqlite3
 import random
 import csv
-import socket
-import threading
 from utils.button import Button
 from menu.base_state import BaseState
 from menu.login_state import LoginState
@@ -59,6 +57,8 @@ level = 1
 start_game = False
 start_opening = False
 
+print(f"start_game: {start_game}")
+
 #================================================================================
 #draw background subroutine
 #================================================================================
@@ -81,6 +81,7 @@ plasma_grenade_is_thrown = False
 #================================================================================
 
 play_button_img = pygame.image.load('assets/buttons/play_button.png').convert_alpha()
+print(f"Play button image loaded: {play_button_img}")
 quit_button_img = pygame.image.load('assets/buttons/quit_button.png').convert_alpha()
 restart_button_img = pygame.image.load('assets/buttons/restart_button.png').convert_alpha()
 space_img = pygame.image.load('assets/background/space.png').convert_alpha()
@@ -110,7 +111,7 @@ font = pygame.font.SysFont('Arial', 50)
 #define colours
 #================================================================================
 
-BGD_COLOUR = (144, 201, 120)
+BGD_COLOUR = (255, 0, 0)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -711,7 +712,6 @@ player = level.process_data(level_data)
 
 run = True
 while run:
-
     sys_clock.tick(FPS)
 
     events = pygame.event.get()
@@ -834,7 +834,7 @@ while run:
 #event handler
 #================================================================
 
-for event in pygame.event.get():
+    for event in pygame.event.get():
         #quit game
         if event.type == pygame.QUIT:
             run = False
