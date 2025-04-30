@@ -25,6 +25,7 @@ import csv
 import socket
 import threading
 from utils.button import Button
+from menu.base_state import BaseState
 from menu.login_state import LoginState
 from menu.menu import MainMenuState
 
@@ -82,7 +83,7 @@ plasma_grenade_is_thrown = False
 play_button_img = pygame.image.load('assets/buttons/play_button.png').convert_alpha()
 quit_button_img = pygame.image.load('assets/buttons/quit_button.png').convert_alpha()
 restart_button_img = pygame.image.load('assets/buttons/restart_button.png').convert_alpha()
-space_img = pygame.image.load('assets/levels/space.png').convert_alpha()
+space_img = pygame.image.load('assets/background/space.png').convert_alpha()
 
 img_list = []
 for i in range(TILE_VARIANTS):
@@ -137,7 +138,7 @@ def reset_level():
     plasma_grenade_group.empty()
     plasma_explosion_group.empty()
     supply_box_group.empty()
-    exit_group.empty()
+    exit_portal_group.empty()
 
 #creating list of empty tiles
     data = []
@@ -147,6 +148,13 @@ def reset_level():
         data.append(r)
 
     return data
+#================================================================================
+#create button instances
+#================================================================================
+
+play_button = Button(300, 200, play_button_img, 1)
+quit_button = Button(300, 300, quit_button_img, 1)
+restart_button = Button(300, 400, restart_button_img, 1)
 
 #================================================================================
 #state management
@@ -158,22 +166,6 @@ states = {
 }
 
 current_state = "login"
-
-#================================================================================
-#server connection
-#================================================================================
-
-def server_communication(data):
-    client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client_socket.connect((HOST, PORT))
-    try:
-        client_socket.send(data.encode('utf-8'))
-        response = client_socket.recv(1024).decode('utf-8')
-        print(f'Response from server: {response}')
-    except:
-        print('Connection closed')
-    finally:
-        client_socket.close()
 
 #================================================================================
 #soldier class for player and enemies
@@ -219,7 +211,7 @@ class Soldier(pygame.sprite.Sprite):
             temp_list = []
             #count number of files in the folder
             num_of_frames = len(os.listdir(f'assets/{self.char_type}/{animation}'))
-            for i in range(num_of_frames):    
+            for i in range(1):
                 img = pygame.image.load(f'assets/{self.char_type}/{animation}/{i}.png').convert_alpha()
                 img = pygame.transform.scale(img, (int(img.get_width() * scale), int(img.get_height() * scale)))
                 temp_list.append(img)
@@ -297,9 +289,8 @@ class Soldier(pygame.sprite.Sprite):
 
         #check if player has made contact with exit door
         level_complete = False
-        if pygame.sprite.spritecollide(self, exit_door, False):
+        if pygame.sprite.spritecollide(self, exit_portal_group, False):
             level_complete = True
-            server_communication('Player has reached the exit')
             print('Player has reached the exit')
             self.kill()
 
@@ -335,7 +326,7 @@ class Soldier(pygame.sprite.Sprite):
                 self.idling = True
                 self.idling_index = 100
             #check if enemy is in close proximity to the player
-            if self.fov.collide_rect(player.rect):
+            if self.fov.colliderect(player.rect):
                 #enemy stop movement and face player
                 self.update_action(0)#call idle animation when conditions are met
                 self.shoot()
@@ -433,8 +424,8 @@ class Level():
                         supply_box = supply_box('Plasma Grenade', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
                     elif tile == 8:
-                        exit = Exit(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
-                        exit_group.add(exit)
+                        exit_portal = ExitPortal(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
+                        exit_portal_group.add(exit_portal)
             
         return player
 
@@ -447,7 +438,7 @@ class Level():
 #exit class
 #================================================================================
 
-class Exit(pygame.sprite.Sprite):
+class ExitPortal(pygame.sprite.Sprite):
     def __init__(self, img, x, y):
         pygame.sprite.Sprite.__init__(self)
         self.image = img
@@ -676,7 +667,7 @@ laser_group = pygame.sprite.Group()
 plasma_grenade_group = pygame.sprite.Group()
 plasma_explosion_group = pygame.sprite.Group()
 supply_box_group = pygame.sprite.Group()
-exit_group = pygame.sprite.Group()
+exit_portal_group = pygame.sprite.Group()
 
 #temp - create plasma boxes
 supply_box = SupplyBox('Med', 100, 260)
@@ -703,11 +694,10 @@ scale = 3
 level_data = []
 for row in range(ROW_COUNTER):
     r = [-1] * COLUMN_COUNTER
-    print(r)
     level_data.append(r)
 
-with open(f'level{level}_data.csv', newline='') as csv:
-    reader = csv.reader(csv, delimiter=',')
+with open(f'level{level}_data.csv', newline='') as csvfile:
+    reader = csv.reader(csvfile, delimiter=',')
     for x, row in enumerate(reader):
         for y, tile in enumerate(row):
             level_data[x][y] = int(tile)
@@ -724,7 +714,8 @@ while run:
 
     sys_clock.tick(FPS)
 
-    next_state = states[current_state].handle_events(events)
+    events = pygame.event.get()
+    next_state = states[current_state].event_handler(events)
     if next_state:
         current_state = next_state
 
@@ -734,13 +725,11 @@ while run:
     if start_game == False:
         #draw main menu
         screen.fill(BGD_COLOUR)
-        if start_button.draw(screen):
+        if play_button.draw(screen):
             start_game = True
             start_opening = True
-            server_communication('Player has started the game')
-        if exit_button.draw(screen):
+        if quit_button.draw(screen):
             run = False
-            server_communication('Player has exited the game')
 
     else:
         draw_bgd()
@@ -748,7 +737,7 @@ while run:
         #show health count
         draw_text('HEALTH: ', font, WHITE, 15, 20)
         for x in range(player.max_health):
-            screen.blit(med_box_img, (100 + (x * 20, 25)))
+            screen.blit(med_box_img, (100 + (x * 20), 25))
         #show ammo count
         draw_text('AMMO: ', font, WHITE, 15, 30)
         for x in range(player.ammo):
@@ -774,17 +763,16 @@ while run:
         plasma_grenade_group.update()
         plasma_explosion_group.update()
         supply_box_group.update()
-        exit_group.update()
+        exit_portal_group.update()
         laser_group.draw(screen)
         plasma_grenade_group.draw(screen)
         plasma_explosion_group.draw(screen)
         supply_box_group.draw(screen)
-        exit_group.draw(screen)
+        exit_portal_group.draw(screen)
         
         if start_opening == True:
             if opening_transition.fade():
                 start_opening = False
-                server_communication('Player has started the game')
                 opening_transition.transition_counter = 0
 
         #update player actions
@@ -792,7 +780,6 @@ while run:
             #shoot lasers
             if shoot:
                 player.shoot()
-                server_communication(f'Player shot a laser. Ammo left: {player.ammo}')
             #throw grenades
             elif plasma_grenade and plasma_grenade_isthrown == False and player.plasma_grenades > 0:
                 plasma_grenade = Plasma_Grenade(player.rect.centerx + (0.5 * player.rect.size[0] * player.direction),\
@@ -801,7 +788,6 @@ while run:
                 #subtract plasma grenades
                 player.plasma_grenades -= 1
                 plasma_grenade_isthrown = True
-                server_communication(f'Player threw a plasma grenade. Plasma grenades left: {player.plasma_grenades}')
                 print(player.plasma_grenades)
             if player.in_air:
                 player.update_action(2)#2: jump
@@ -819,7 +805,6 @@ while run:
                 level_data = reset_level()
                 level = Level()
                 player = level.process_data(level_data)
-                server_communication('Player has completed the level')
                 if level <= MAX_LEVEL:
                     with open(f'level{level}_data.csv', newline='') as csv:
                         reader = csv.reader(csv, delimiter=',')
@@ -844,13 +829,6 @@ while run:
                                 level_data[x][y] = int(tile)
                     level = Level()
                     player = level.process_data(level_data)
-
-#================================================================
-#send player username to server
-#================================================================
-
-player_username = 'player1'
-server_communication(player_username)
 
 #================================================================
 #event handler

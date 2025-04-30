@@ -14,10 +14,10 @@ class LoginState(BaseState):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN and self.username.strip():
                     return "main_menu"
-            elif event.key == pygame.K_BACKSPACE:
-                self.username = self.username[:-1]
-            else:
-                self.username += event.unicode
+                elif event.key == pygame.K_BACKSPACE:
+                    self.username = self.username[:-1]
+                else:
+                    self.username += event.unicode
 
     def render(self):
         self.screen.fill((144, 201, 120))
