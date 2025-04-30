@@ -111,7 +111,7 @@ font = pygame.font.SysFont('Arial', 50)
 #define colours
 #================================================================================
 
-BGD_COLOUR = (255, 0, 0)
+BGD_COLOUR = (33, 31, 31)
 RED = (255, 0, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -167,6 +167,7 @@ states = {
 }
 
 current_state = "login"
+print('Current state:', current_state)
 
 #================================================================================
 #soldier class for player and enemies
@@ -722,16 +723,7 @@ while run:
     states[current_state].update()
     states[current_state].render()
 
-    if start_game == False:
-        #draw main menu
-        screen.fill(BGD_COLOUR)
-        if play_button.draw(screen):
-            start_game = True
-            start_opening = True
-        if quit_button.draw(screen):
-            run = False
-
-    else:
+    if start_game == True: 
         draw_bgd()
         level.draw()
         #show health count
@@ -747,13 +739,23 @@ while run:
         for x in range(player.plasma_grenades):
             screen.blit(plasma_grenade_img, (100 + (x * 25), 55))
 
-        player.update()
-        player.draw()
+            player.update()
+            player.draw()
 
-        for enemy in enemy_soldier_group:
-            enemy.ai()
-            enemy.update()
-            enemy.draw()
+            for enemy in enemy_soldier_group:
+                enemy.ai()
+                enemy.update()
+                enemy.draw()
+
+        else:
+            #draw main menu
+            screen.fill(BGD_COLOUR)
+            if play_button.draw(screen):
+                start_game = True
+                start_opening = True
+            if quit_button.draw(screen):
+                run = False
+            
 
 #================================================================================
 #update and draw sprite groups

@@ -9,12 +9,13 @@ class LoginState(BaseState):
         self.username = ""
 
         self.space_img = pygame.image.load("assets/background/space.png").convert_alpha()
+        self.space_img = pygame.transform.scale(self.space_img, (800, 600))
 
         sign_in_img = pygame.image.load("assets/buttons/sign_in_button.png").convert_alpha()
         sign_up_img = pygame.image.load("assets/buttons/sign_up_button.png").convert_alpha()
 
-        self.sign_in_button = Button(200, 300, sign_in_img, 1)
-        self.sign_up_button = Button(400, 300, sign_up_img, 1)
+        self.sign_in_button = Button(350, 300, sign_in_img, 1 * 0.5)
+        self.sign_up_button = Button(350, 400, sign_up_img, 1 * 0.5)
 
     def event_handler(self, events):
         for event in events:
