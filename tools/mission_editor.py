@@ -31,7 +31,7 @@ pygame.display.set_caption("Cosmic Survivor mission editor")
 ROW_COUNTER = 16
 COLUMN_COUNTER = 150
 TILE_MAGNITUIDE = HEIGHT // ROW_COUNTER
-TILE_VARIANTS = 2
+TILE_VARIANTS = 5
 mission = 0
 selected_tile = 0
 screen_scroll_left = False
