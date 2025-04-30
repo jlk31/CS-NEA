@@ -149,6 +149,32 @@ def reset_level():
         data.append(r)
 
     return data
+
+#================================================================================
+#method to load mission data 
+#================================================================================
+
+def load_mission(mission_number):
+    global level_data, level, player
+    level_data = []
+    for row in range(ROW_COUNTER):
+        r = [-1] * COLUMN_COUNTER
+        level_data.append(r)
+
+    try:
+        with open(f'level{mission_number}_data.csv', newline='') as csvfile:
+            reader = csv.reader(csvfile, delimiter=',')
+            for x, row in enumerate(reader):
+                for y, tile in enumerate(row):
+                    level_data[x][y] = int(tile)
+    except FileNotFoundError:
+        print(f"Mission file level{mission_number}_data.csv not found!")
+        return False
+
+    level = Level()
+    player = level.process_data(level_data)
+    return True
+
 #================================================================================
 #create button instances
 #================================================================================
@@ -167,7 +193,6 @@ states = {
 }
 
 current_state = "login"
-print('Current state:', current_state)
 
 #================================================================================
 #soldier class for player and enemies
@@ -715,11 +740,13 @@ run = True
 while run:
     sys_clock.tick(FPS)
 
+    state = states[current_state]
+
     events = pygame.event.get()
     next_state = states[current_state].event_handler(events)
     if next_state:
         current_state = next_state
-
+        continue
     states[current_state].update()
     states[current_state].render()
 
@@ -748,11 +775,14 @@ while run:
                 enemy.draw()
 
         else:
-            #draw main menu
             screen.fill(BGD_COLOUR)
             if play_button.draw(screen):
-                start_game = True
-                start_opening = True
+                mission_number = 0
+                if load_mission(mission_number):
+                    start_game = True
+                    start_opening = True
+                else:
+                    print(f"Mission {mission_number} not found!")
             if quit_button.draw(screen):
                 run = False
             
@@ -871,6 +901,6 @@ while run:
                 plasma_grenade = False
                 plasma_grenade_is_thrown = False
 
-        pygame.display.update()
+        pygame.display.flip()
 
 pygame.quit()

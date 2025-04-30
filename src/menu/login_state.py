@@ -38,6 +38,7 @@ class LoginState(BaseState):
             if event.type == pygame.QUIT:
                 pygame.quit()
                 exit()
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_TAB:  # Switch between username and password fields
                     self.active_field = "password" if self.active_field == "username" else "username"
@@ -55,7 +56,14 @@ class LoginState(BaseState):
                         self.password.append(event.unicode)
 
         self.username_str = ''.join(self.username)
-        self.password_str = '*' * len(self.password)
+        self.password_str = '*' * len(self.password)   
+
+        if self.sign_in_button.draw(self.screen):
+            print("Sign In button clicked")
+            return "main_menu"
+        if self.sign_up_button.draw(self.screen):
+            print("Sign Up button clicked")
+            return "main_menu"
 
 #================================================================================
 #handle user sign in 
@@ -77,6 +85,7 @@ class LoginState(BaseState):
             if self.username and self.password:
                 if self.sign_up(self.username, self.password):
                     print("Sign up successful")
+                    return "main_menu"  # Transition to the main menu
                 else:
                     print("Username already exists. Please choose another.")
 
@@ -153,8 +162,10 @@ class LoginState(BaseState):
 #================================================================================
 
     def render(self):
+        # Draw the background
         self.screen.blit(self.space_img, (0, 0))
 
+        # Draw input boxes
         user_box = pygame.Rect(200, 175, 400, 50)
         pygame.draw.rect(self.screen, (0, 0, 0), user_box, border_radius=5)
         pygame.draw.rect(self.screen, (255, 255, 255), user_box, 2, border_radius=5)
@@ -163,6 +174,7 @@ class LoginState(BaseState):
         pygame.draw.rect(self.screen, (0, 0, 0), pass_box, border_radius=5)
         pygame.draw.rect(self.screen, (255, 255, 255), pass_box, 2, border_radius=5)
 
+        # Render text
         font = pygame.font.SysFont("Futura", 30)
         user_surface = font.render(f"Username: {self.username_str}", True, (255, 255, 255))
         pass_surface = font.render(f"Password: {self.password_str}", True, (255, 255, 255))
@@ -170,7 +182,6 @@ class LoginState(BaseState):
         self.screen.blit(user_surface, (user_box.x + 10, user_box.y + 10))
         self.screen.blit(pass_surface, (pass_box.x + 10, pass_box.y + 10))
 
+        # Draw buttons
         self.sign_in_button.draw(self.screen)
         self.sign_up_button.draw(self.screen)
-
-        self.initialize_database()
