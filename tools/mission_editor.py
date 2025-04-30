@@ -31,7 +31,7 @@ pygame.display.set_caption("Cosmic Survivor mission editor")
 ROW_COUNTER = 16
 COLUMN_COUNTER = 150
 TILE_MAGNITUIDE = HEIGHT // ROW_COUNTER
-TILE_VARIANTS = 1
+TILE_VARIANTS = 2
 mission = 0
 selected_tile = 0
 screen_scroll_left = False
@@ -59,11 +59,15 @@ font = pygame.font.SysFont('Arial', 30)
 
 space_img = pygame.image.load('assets/background/space.png').convert_alpha()
 
+print(f"Space image loaded: {space_img}")
+
 img_list = []
 for i in range(TILE_VARIANTS):
     img = pygame.image.load(f'assets/levels/tiles/{i}.png').convert_alpha()
     img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
     img_list.append(img)
+
+    print(f"Tile images loaded: {len(img_list)}")
 
 save_img = pygame.image.load('assets/buttons/save_button.png').convert_alpha()
 load_img = pygame.image.load('assets/buttons/load_button.png').convert_alpha()
@@ -76,7 +80,7 @@ for row in range(ROW_COUNTER):
 for tile in range(0, COLUMN_COUNTER):
     level_data[ROW_COUNTER - 1][tile] = 0
 
-def draw_text(text, font, color, surface, x, y):
+def draw_text(text, font, color, x, y):
     img = font.render(text, True, color)
     screen.blit(img, (x, y))
 
@@ -93,8 +97,8 @@ def draw_grid():
         pygame.draw.line(screen, WHITE, (0, r * TILE_MAGNITUIDE), (WIDTH, r * TILE_MAGNITUIDE))
 
 def draw_level():
-    for x, row in enumerate(level_data):
-        for y, tile in enumerate(row):
+    for y, row in enumerate(level_data):
+        for x, tile in enumerate(row):
             if tile >= 0:
                 screen.blit(img_list[tile], (x * TILE_MAGNITUIDE - screen_scroll, y * TILE_MAGNITUIDE)) 
 
@@ -102,8 +106,8 @@ def draw_level():
 #create buttons
 #===============================================================================
 
-save_button = Button(WIDTH // 2, HEIGHT + low_margin - 50, save_img, 1)
-load_button = Button(WIDTH // 2 + 200, HEIGHT + low_margin - 50, load_img, 1)
+save_button = Button(WIDTH // 2, HEIGHT + low_margin - 80, save_img, 0.5)
+load_button = Button(WIDTH // 2 + 200, HEIGHT + low_margin - 80, load_img, 0.5)
 
 button_list = []
 button_column = 0
@@ -129,7 +133,7 @@ while run:
     draw_grid()
     draw_level()
     draw_text(f'Level: {mission}', font, WHITE, 10, HEIGHT + low_margin - 90)
-    draw_text('Press W or S to change mission', font, WHITE, 10, HEIGHT + low_margin - 90)
+    draw_text('Press W or S to change mission', font, WHITE, 10, HEIGHT + low_margin - 60)
 
     if save_button.draw(screen):
         with open(f'level{mission}_data.csv', 'w', newline='') as csvfile:
@@ -139,7 +143,7 @@ while run:
     if load_button.draw(screen):
         screen_scroll = 0
         with open(f'level{mission}_data.csv', newline='') as csvfile:
-            reader = csv.writer(csvfile, delimiter=',')
+            reader = csv.reader(csvfile, delimiter=',')
             for row in level_data:
                 for x, row in enumerate(reader):
                     for y, tile in enumerate(row):
@@ -149,23 +153,23 @@ while run:
 #draw tile panel
 #===============================================================================
 
-pygame.draw.rect(screen, BLACK, (WIDTH, 0, side_margin, HEIGHT))
+    pygame.draw.rect(screen, BLACK, (WIDTH, 0, side_margin, HEIGHT))
 
-button_counter = 0
-for button_counter, x in enumerate(button_list):
-    if x.draw(screen):
-        selected_tile = button_counter
+    button_counter = 0
+    for button_counter, x in enumerate(button_list):
+        if x.draw(screen):
+            selected_tile = button_counter
 
-pygame.draw.rect(screen, RED, button_list[selected_tile].rect, 3)
+    pygame.draw.rect(screen, RED, button_list[selected_tile].rect, 3)
 
 #================================================================================
 #map scrolling
 #================================================================================
 
-if screen_scroll_left and screen_scroll > 0:
-    screen_scroll -= 5 * screen_scroll_speed
-if screen_scroll_right and screen_scroll < (COLUMN_COUNTER * TILE_MAGNITUIDE) - WIDTH:
-    screen_scroll += 5 * screen_scroll_speed
+    if screen_scroll_left and screen_scroll > 0:
+        screen_scroll -= 5 * screen_scroll_speed
+    if screen_scroll_right and screen_scroll < (COLUMN_COUNTER * TILE_MAGNITUIDE) - WIDTH:
+        screen_scroll += 5 * screen_scroll_speed
 
 #===============================================================================
 #convert mouse position to tile position
