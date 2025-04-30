@@ -6,7 +6,10 @@
 #===============================================================================
 
 import pygame
-from src.utils.button import Button
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
+from utils.button import Button
 import csv
 
 #================================================================================
@@ -58,12 +61,12 @@ space_img = pygame.image.load('assets/background/space.png').convert_alpha()
 
 img_list = []
 for i in range(TILE_VARIANTS):
-    img = pygame.image.load(f'assets/tiles/{i}.png').convert_alpha()
+    img = pygame.image.load(f'assets/levels/tiles/{i}.png').convert_alpha()
     img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
     img_list.append(img)
 
 save_img = pygame.image.load('assets/buttons/save_button.png').convert_alpha()
-load_img = pygame.image.load('assets/buttons/load_button.jpg').convert_alpha()
+load_img = pygame.image.load('assets/buttons/load_button.png').convert_alpha()
 
 level_data = []
 for row in range(ROW_COUNTER):
