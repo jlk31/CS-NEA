@@ -18,17 +18,17 @@ pygame.init()
 FPS = 60
 sys_clock = pygame.time.Clock()
 
-width = 800
-height = 640
+WIDTH = 800
+HEIGHT = 640
 low_margin = 100
 side_margin = 300
 
-screen = pygame.display.set_mode((width + side_margin, height + low_margin))
+screen = pygame.display.set_mode((WIDTH + side_margin, HEIGHT + low_margin))
 pygame.display.set_caption("Cosmic Survivor mission editor")
 ROW_COUNTER = 16
 COLUMN_COUNTER = 150
-TILE_MAGNITUIDE = height // ROW_COUNTER
-TILE_VARIANTS = 6
+TILE_MAGNITUIDE = HEIGHT // ROW_COUNTER
+TILE_VARIANTS = 1
 mission = 0
 selected_tile = 0
 screen_scroll_left = False
@@ -62,8 +62,8 @@ for i in range(TILE_VARIANTS):
     img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
     img_list.append(img)
 
-save_img = pygame.image.load('assets/save_button.png').convert_alpha()
-load_img = pygame.image.load('assets/load_button.png').convert_alpha()
+save_img = pygame.image.load('assets/buttons/save_button.png').convert_alpha()
+load_img = pygame.image.load('assets/buttons/load_button.jpg').convert_alpha()
 
 level_data = []
 for row in range(ROW_COUNTER):
@@ -85,9 +85,9 @@ def draw_bgd():
 
 def draw_grid():
     for c in range(COLUMN_COUNTER + 1):
-        pygame.draw.line(screen, WHITE, (c * TILE_MAGNITUIDE - screen_scroll, 0), (c * TILE_MAGNITUIDE - screen_scroll, height))
+        pygame.draw.line(screen, WHITE, (c * TILE_MAGNITUIDE - screen_scroll, 0), (c * TILE_MAGNITUIDE - screen_scroll, HEIGHT))
     for r in range(ROW_COUNTER + 1):
-        pygame.draw.line(screen, WHITE, (0, r * TILE_MAGNITUIDE), (width, r * TILE_MAGNITUIDE))
+        pygame.draw.line(screen, WHITE, (0, r * TILE_MAGNITUIDE), (WIDTH, r * TILE_MAGNITUIDE))
 
 def draw_level():
     for x, row in enumerate(level_data):
@@ -99,15 +99,15 @@ def draw_level():
 #create buttons
 #===============================================================================
 
-save_button = Button(width // 2, height + low_margin - 50, save_img, None)
-load_button = Button(width // 2 + 200, height + low_margin - 50, load_img, None)
+save_button = Button(WIDTH // 2, HEIGHT + low_margin - 50, save_img, 1)
+load_button = Button(WIDTH // 2 + 200, HEIGHT + low_margin - 50, load_img, 1)
 
 button_list = []
 button_column = 0
 button_row = 0
 
 for j in range(len(img_list)):
-    button = button.Button(width + (75 * button_column) + 50, (75 * button_row) + 50, img_list[j], None)
+    button = Button(WIDTH + (75 * button_column) + 50, (75 * button_row) + 50, img_list[j], 1)
     button_list.append(button)
     button_column += 1
     if button_column == 3:
@@ -125,8 +125,8 @@ while run:
     draw_bgd()
     draw_grid()
     draw_level()
-    draw_text(f'Level: {mission}', font, WHITE, 10, height + low_margin - 90)
-    draw_text('Press W or S to change mission', font, WHITE, 10, height + low_margin - 90)
+    draw_text(f'Level: {mission}', font, WHITE, 10, HEIGHT + low_margin - 90)
+    draw_text('Press W or S to change mission', font, WHITE, 10, HEIGHT + low_margin - 90)
 
     if save_button.draw(screen):
         with open(f'level{mission}_data.csv', 'w', newline='') as csvfile:
@@ -146,7 +146,7 @@ while run:
 #draw tile panel
 #===============================================================================
 
-pygame.draw.rect(screen, BLACK, (width, 0, side_margin, height))
+pygame.draw.rect(screen, BLACK, (WIDTH, 0, side_margin, HEIGHT))
 
 button_counter = 0
 for button_counter, x in enumerate(button_list):
@@ -161,7 +161,7 @@ pygame.draw.rect(screen, RED, button_list[selected_tile].rect, 3)
 
 if screen_scroll_left and screen_scroll > 0:
     screen_scroll -= 5 * screen_scroll_speed
-if screen_scroll_right and screen_scroll < (COLUMN_COUNTER * TILE_MAGNITUIDE) - width:
+if screen_scroll_right and screen_scroll < (COLUMN_COUNTER * TILE_MAGNITUIDE) - WIDTH:
     screen_scroll += 5 * screen_scroll_speed
 
 #===============================================================================
@@ -171,7 +171,7 @@ if screen_scroll_right and screen_scroll < (COLUMN_COUNTER * TILE_MAGNITUIDE) - 
     pos = pygame.mouse.get_pos()
     x = (pos[0] + screen_scroll) // TILE_MAGNITUIDE
     y = pos[1] // TILE_MAGNITUIDE
-    if pos[0] < width and pos[1] < height:
+    if pos[0] < WIDTH and pos[1] < HEIGHT:
         if pygame.mouse.get_pressed()[0] == 1:
             if level_data[y][x] != selected_tile:
                 level_data[y][x] = selected_tile
