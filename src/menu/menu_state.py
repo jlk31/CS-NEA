@@ -32,16 +32,13 @@ class MainMenuState(BaseState):
                 pygame.quit()
                 exit()
 
-            # Handle button clicks specific to MainMenuState
         if self.play_button.draw(self.screen):
             print("Play button clicked")
-            return "login"  # Transition to the login state
+            return "game"
         if self.learn_button.draw(self.screen):
             print("Learn button clicked")
-            # Add logic for Learn button if needed
         if self.leaderboard_button.draw(self.screen):
             print("Leaderboard button clicked")
-            # Add logic for Leaderboard button if needed
         if self.quit_button.draw(self.screen):
             pygame.quit()
             exit()

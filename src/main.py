@@ -25,7 +25,7 @@ import csv
 from utils.button import Button
 from menu.base_state import BaseState
 from menu.login_state import LoginState
-from menu.menu import MainMenuState
+from menu.menu_state import MainMenuState
 from menu.game_state import GameState
 
 #================================================================================
@@ -180,9 +180,6 @@ def load_mission(mission_number):
 #================================================================================
 #create button instances
 #================================================================================
-
-play_button = Button(300, 200, play_button_img, 1)
-quit_button = Button(300, 300, quit_button_img, 1)
 restart_button = Button(300, 400, restart_button_img, 1)
 
 #================================================================================
@@ -720,12 +717,12 @@ for row in range(ROW_COUNTER):
     r = [-1] * COLUMN_COUNTER
     level_data.append(r)
 
+
 with open(f'level{level}_data.csv', newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=',')
     for x, row in enumerate(reader):
         for y, tile in enumerate(row):
             level_data[x][y] = int(tile)
-
 level = Level()
 player = level.process_data(level_data)
 
@@ -751,9 +748,9 @@ while run:
     if current_state == "game":
         state.update(moving_left, moving_right, shoot, plasma_grenade)
         state.render()
-
-    states[current_state].update()
-    states[current_state].render()
+    else:
+        states[current_state].update()
+        states[current_state].render()
 
     if start_game == True: 
         draw_bgd()
@@ -778,23 +775,6 @@ while run:
                 enemy.ai()
                 enemy.update()
                 enemy.draw()
-
-        else:
-            screen.fill(BGD_COLOUR)
-            if play_button.draw(screen):
-                print("Play button pressed")
-                mission_number = 1
-                if load_mission(mission_number):
-                    print(f"Mission {mission_number} loaded")
-                    start_game = True
-                    start_opening = True
-                    current_state = "game"
-                else:
-                    print(f"Mission {mission_number} not found!")
-            if quit_button.draw(screen):
-                run = False
-            
-        print("current_state: ", current_state)
 
 #================================================================================
 #update and draw sprite groups
@@ -846,12 +826,26 @@ while run:
                 level_data = reset_level()
                 level = Level()
                 player = level.process_data(level_data)
+
+                states["game"] = GameState(
+                    screen,
+                    level,
+                    player,
+                    level_data,
+                    laser_group,
+                    plasma_grenade_group,
+                    plasma_explosion_group,
+                    supply_box_group,
+                    exit_portal_group
+                )
+
                 if level <= MAX_LEVEL:
                     with open(f'level{level}_data.csv', newline='') as csv:
                         reader = csv.reader(csv, delimiter=',')
                         for x, row in enumerate(reader):
                             for y, tile in enumerate(row):
                                 level_data[x][y] = int(tile)
+                    
                     level = Level()
                     player = level.process_data(level_data)
         else:
@@ -862,14 +856,6 @@ while run:
                     start_opening = True
                     bgd_scroll = 0
                     level_data = reset_level()
-
-                    with open(f'level{level}_data.csv', newline='') as csv:
-                        reader = csv.reader(csv, delimiter=',')
-                        for x, row in enumerate(reader):
-                            for y, tile in enumerate(row):
-                                level_data[x][y] = int(tile)
-                    level = Level()
-                    player = level.process_data(level_data)
 
 #================================================================
 #event handler
