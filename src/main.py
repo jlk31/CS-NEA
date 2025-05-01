@@ -54,7 +54,7 @@ ROW_COUNTER = 16
 TILE_MAGNITUDE = HEIGHT // ROW_COUNTER
 MAX_LEVEL = 5
 COLUMN_COUNTER = 150
-level = 1
+level = 0
 start_game = False
 start_opening = False
 
@@ -82,7 +82,6 @@ plasma_grenade_is_thrown = False
 #================================================================================
 
 play_button_img = pygame.image.load('assets/buttons/play_button.png').convert_alpha()
-print(f"Play button image loaded: {play_button_img}")
 quit_button_img = pygame.image.load('assets/buttons/quit_button.png').convert_alpha()
 restart_button_img = pygame.image.load('assets/buttons/restart_button.png').convert_alpha()
 space_img = pygame.image.load('assets/background/space.png').convert_alpha()
@@ -192,7 +191,7 @@ states = {
     "game": GameState(screen, None, None, None),
 }
 
-current_state = "main_menu"
+current_state = "login"
 
 #================================================================================
 #soldier class for player and enemies
@@ -433,7 +432,7 @@ class Level():
         for y, row in enumerate(data):
             self.level_data.append([])
             for x, tile in enumerate(row):
-                if tile >= 0:
+                if 0 <= tile < len(img_list):
                     img = img_list[tile]
                     img_rect = img.get_rect()
                     img_rect.x = x * TILE_MAGNITUDE
@@ -843,7 +842,11 @@ while run:
                     with open(f'level{level}_data.csv', newline='') as csv:
                         reader = csv.reader(csv, delimiter=',')
                         for x, row in enumerate(reader):
+                            if x >= ROW_COUNTER:
+                                break
                             for y, tile in enumerate(row):
+                                if y >= COLUMN_COUNTER:
+                                    break
                                 level_data[x][y] = int(tile)
                     
                     level = Level()
