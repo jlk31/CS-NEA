@@ -68,8 +68,6 @@ for i in range(TILE_VARIANTS):
     img = pygame.transform.scale(img, (TILE_MAGNITUIDE, TILE_MAGNITUIDE))
     img_list.append(img)
 
-    print(f"Tile images loaded: {len(img_list)}")
-
 save_img = pygame.image.load('assets/buttons/save_button.png').convert_alpha()
 load_img = pygame.image.load('assets/buttons/load_button.png').convert_alpha()
 

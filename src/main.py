@@ -160,31 +160,31 @@ def load_mission(mission_number):
         r = [-1] * COLUMN_COUNTER
         level_data.append(r)
 
-        if load_mission(0):  # Assuming mission number 0
-            print("Mission loaded successfully!")
-        else:
-            print("Failed to load mission!")
-
     try:
+
+        print(f"Attempting to open file: {os.path.abspath(f'level{mission_number}_data.csv')}")
+
         with open(f'level{mission_number}_data.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for x, row in enumerate(reader):
-
-                print(f"Raw row {x}: {row}")
-
                 for y, tile in enumerate(row):
-                    level_data[x][y] = int(tile)
+                    level_data[x][y] = int(tile.strip())
+                    if level_data[x][y] == 5:  # Only print for player spawn point
+                        print(f"Player spawn point found in load_mission() at ({y}, {x})")
+
     except FileNotFoundError:
         print(f"Mission file level{mission_number}_data.csv not found!")
         return False
 
     level = Level()
     player = level.process_data(level_data)
+
     return True
 
 #================================================================================
 #create button instances
 #================================================================================
+
 restart_button = Button(300, 400, restart_button_img, 1)
 
 #================================================================================
@@ -443,6 +443,7 @@ class Level():
         self.level_length = len(data[0])
         self.level_data = []
         player = None
+
         for y, row in enumerate(data):
             self.level_data.append([])
             for x, tile in enumerate(row):
@@ -467,6 +468,7 @@ class Level():
                         exit_portal = ExitPortal(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         exit_portal_group.add(exit_portal)
                     elif tile == 5:
+                        print(f"Player spawn point detected in process_data() at ({x}, {y})")
                         print(f"Player spawn point found at: ({x}, {y})")
                         player = Soldier('player', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE, 1.65, 2, 20, 5)
                     elif tile == 6:
@@ -751,6 +753,11 @@ player = level.process_data(level_data)
 
 states["game"] = GameState(screen, level, player, level_data)
 
+if load_mission(0):  # Assuming mission number 0
+    print("Mission loaded successfully!")
+else:
+    print("Failed to load mission!")
+
 #================================================================
 #main game loop
 #================================================================
@@ -798,6 +805,11 @@ while run:
                 enemy.ai()
                 enemy.update()
                 enemy.draw()
+
+        if load_mission(0):  # Assuming mission number 0
+            print("Mission loaded successfully!")
+        else:
+            print("Failed to load mission!")
 
 #================================================================================
 #update and draw sprite groups
