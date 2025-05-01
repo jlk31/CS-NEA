@@ -249,6 +249,13 @@ class Soldier(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
+        self.scale_down(0.5)
+
+    def scale_down(self, scale_factor):
+        """Scale down the player's sprite."""
+        self.image = pygame.transform.scale(self.image, (int(self.width * scale_factor), int(self.height * scale_factor)))
+        self.rect = self.image.get_rect(center=self.rect.center)
+
     def update(self):
         self.update_animation()
         self.check_alive()
@@ -451,7 +458,7 @@ class Level():
                         supply_box_group.add(supply_box)
                     elif tile == 8:
                         exit_portal = ExitPortal(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
-                        exit_portal_group.add(exit_portal)
+                        exit_portal_group.add(exit_portal)            
             
         return player
 

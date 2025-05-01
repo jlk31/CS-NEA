@@ -47,7 +47,7 @@ class GameState:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return "main_menu"  # Return to the main menu if ESC is pressed
+                    return "main_menu"  #return to the main menu if ESC is pressed
         return None
     
     def update(self, moving_left, moving_right, shoot, plasma_grenade):

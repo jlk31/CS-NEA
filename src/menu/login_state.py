@@ -40,7 +40,7 @@ class LoginState(BaseState):
                 exit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_TAB:  # Switch between username and password fields
+                if event.key == pygame.K_TAB:  #switch between username and password fields
                     self.active_field = "password" if self.active_field == "username" else "username"
                 elif event.key == pygame.K_RETURN and self.username and self.password:
                     return "main_menu"
@@ -85,7 +85,7 @@ class LoginState(BaseState):
             if self.username and self.password:
                 if self.sign_up(self.username, self.password):
                     print("Sign up successful")
-                    return "main_menu"  # Transition to the main menu
+                    return "main_menu"  #transition to the main menu
                 else:
                     print("Username already exists. Please choose another.")
 
@@ -98,10 +98,10 @@ class LoginState(BaseState):
         conn = sqlite3.connect("users.db")
         cursor = conn.cursor()
 
-        # Drop the old table if it exists
+        #drop the old table if it exists
         cursor.execute("DROP TABLE IF EXISTS users")
 
-        # Create the new table with username and password columns
+        #create the new table with username and password columns
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 username TEXT PRIMARY KEY,
@@ -144,10 +144,10 @@ class LoginState(BaseState):
         conn = sqlite3.connect("users.db")
         cursor = conn.cursor()
 
-        # Drop the old table if it exists
+        #drop the old table if it exists
         cursor.execute("DROP TABLE IF EXISTS users")
 
-        # Create the new table with username and password columns
+        #create the new table with username and password columns
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS users (
                 username TEXT PRIMARY KEY,
@@ -162,10 +162,8 @@ class LoginState(BaseState):
 #================================================================================
 
     def render(self):
-        # Draw the background
         self.screen.blit(self.space_img, (0, 0))
 
-        # Draw input boxes
         user_box = pygame.Rect(200, 175, 400, 50)
         pygame.draw.rect(self.screen, (0, 0, 0), user_box, border_radius=5)
         pygame.draw.rect(self.screen, (255, 255, 255), user_box, 2, border_radius=5)
@@ -174,7 +172,6 @@ class LoginState(BaseState):
         pygame.draw.rect(self.screen, (0, 0, 0), pass_box, border_radius=5)
         pygame.draw.rect(self.screen, (255, 255, 255), pass_box, 2, border_radius=5)
 
-        # Render text
         font = pygame.font.SysFont("Futura", 30)
         user_surface = font.render(f"Username: {self.username_str}", True, (255, 255, 255))
         pass_surface = font.render(f"Password: {self.password_str}", True, (255, 255, 255))
@@ -182,6 +179,5 @@ class LoginState(BaseState):
         self.screen.blit(user_surface, (user_box.x + 10, user_box.y + 10))
         self.screen.blit(pass_surface, (pass_box.x + 10, pass_box.y + 10))
 
-        # Draw buttons
         self.sign_in_button.draw(self.screen)
         self.sign_up_button.draw(self.screen)
