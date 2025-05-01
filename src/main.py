@@ -144,7 +144,6 @@ def reset_level():
     data = []
     for row in range(ROW_COUNTER):
         r = [-1] * COLUMN_COUNTER
-        print(r)
         data.append(r)
 
     return data
@@ -169,7 +168,7 @@ def load_mission(mission_number):
             for x, row in enumerate(reader):
                 for y, tile in enumerate(row):
                     level_data[x][y] = int(tile.strip())
-                    if level_data[x][y] == 5:  # Only print for player spawn point
+                    if level_data[x][y] == 5:
                         print(f"Player spawn point found in load_mission() at ({y}, {x})")
 
     except FileNotFoundError:
@@ -178,6 +177,8 @@ def load_mission(mission_number):
 
     level = Level()
     player = level.process_data(level_data)
+
+    print(f"Player created at: ({player.rect.x}, {player.rect.y})")
 
     return True
 
@@ -442,6 +443,7 @@ class Level():
     def process_data(self, data):
         self.level_length = len(data[0])
         self.level_data = []
+
         player = None
 
         for y, row in enumerate(data):
@@ -468,8 +470,6 @@ class Level():
                         exit_portal = ExitPortal(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         exit_portal_group.add(exit_portal)
                     elif tile == 5:
-                        print(f"Player spawn point detected in process_data() at ({x}, {y})")
-                        print(f"Player spawn point found at: ({x}, {y})")
                         player = Soldier('player', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE, 1.65, 2, 20, 5)
                     elif tile == 6:
                         enemy = Soldier('enemy', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE, 1.65, 2, 20, 0)
@@ -477,7 +477,7 @@ class Level():
 
         if player is None:
             print("Warning: No player spawn point found! Creating default player at (0, 0).")
-            player = Soldier('player', 0, 0, 1.65, 2, 20, 5)
+            player = Soldier('player', 1, 11, 1.65, 2, 20, 5)
 
         print(f"Player created at: ({player.rect.x}, {player.rect.y})")
         
