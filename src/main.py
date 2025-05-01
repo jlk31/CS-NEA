@@ -194,7 +194,7 @@ states = {
     "game": GameState(screen, None, None, None),
 }
 
-current_state = "login"
+current_state = "main_menu"
 
 #================================================================================
 #soldier class for player and enemies
