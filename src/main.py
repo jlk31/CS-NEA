@@ -58,8 +58,6 @@ level = 0
 start_game = False
 start_opening = False
 
-print(f"start_game: {start_game}")
-
 #================================================================================
 #draw background subroutine
 #================================================================================
@@ -162,10 +160,18 @@ def load_mission(mission_number):
         r = [-1] * COLUMN_COUNTER
         level_data.append(r)
 
+        if load_mission(0):  # Assuming mission number 0
+            print("Mission loaded successfully!")
+        else:
+            print("Failed to load mission!")
+
     try:
         with open(f'level{mission_number}_data.csv', newline='') as csvfile:
             reader = csv.reader(csvfile, delimiter=',')
             for x, row in enumerate(reader):
+
+                print(f"Raw row {x}: {row}")
+
                 for y, tile in enumerate(row):
                     level_data[x][y] = int(tile)
     except FileNotFoundError:
@@ -191,7 +197,7 @@ states = {
     "game": GameState(screen, None, None, None),
 }
 
-current_state = "login"
+current_state = "main_menu"
 
 #================================================================================
 #soldier class for player and enemies
@@ -249,12 +255,12 @@ class Soldier(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
-        self.scale_down(0.5)
-
     def scale_down(self, scale_factor):
         """Scale down the player's sprite."""
         self.image = pygame.transform.scale(self.image, (int(self.width * scale_factor), int(self.height * scale_factor)))
         self.rect = self.image.get_rect(center=self.rect.center)
+
+        self.scale_down(0.5)
 
     def update(self):
         self.update_animation()
@@ -436,6 +442,7 @@ class Level():
     def process_data(self, data):
         self.level_length = len(data[0])
         self.level_data = []
+        player = None
         for y, row in enumerate(data):
             self.level_data.append([])
             for x, tile in enumerate(row):
@@ -445,29 +452,39 @@ class Level():
                     img_rect.x = x * TILE_MAGNITUDE
                     img_rect.y = y * TILE_MAGNITUDE
                     tile_data = (img, img_rect)
-                    if tile >= 0 and tile <= 4:
+                    if tile >= 0:
                         self.obstacle_list.append(tile_data)
-                    elif tile >= 5:
-                        supply_box = supply_box('Med', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
+                    elif tile == 1:
+                        supply_box = SupplyBox('Med', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
-                    elif tile >= 6:
-                        supply_box = supply_box('Laser', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
+                    elif tile == 2:
+                        supply_box = SupplyBox('Laser', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
-                    elif tile >= 7:
-                        supply_box = supply_box('Plasma Grenade', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
+                    elif tile == 3:
+                        supply_box = SupplyBox('Plasma Grenade', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
                         supply_box_group.add(supply_box)
-                    elif tile == 8:
+                    elif tile == 4:
                         exit_portal = ExitPortal(img, x * TILE_MAGNITUDE, y * TILE_MAGNITUDE)
-                        exit_portal_group.add(exit_portal)            
-            
-        return player
+                        exit_portal_group.add(exit_portal)
+                    elif tile == 5:
+                        print(f"Player spawn point found at: ({x}, {y})")
+                        player = Soldier('player', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE, 1.65, 2, 20, 5)
+                    elif tile == 6:
+                        enemy = Soldier('enemy', x * TILE_MAGNITUDE, y * TILE_MAGNITUDE, 1.65, 2, 20, 0)
+                        enemy_soldier_group.add(enemy)
 
+        if player is None:
+            print("Warning: No player spawn point found! Creating default player at (0, 0).")
+            player = Soldier('player', 0, 0, 1.65, 2, 20, 5)
+
+        print(f"Player created at: ({player.rect.x}, {player.rect.y})")
+        
+        return player
+    
     def draw(self):
         for tile in self.obstacle_list:
             tile[1][0] += screen_scroll
             screen.blit(tile[0], tile[1])
-
-        return player
 
 #================================================================================
 #exit class

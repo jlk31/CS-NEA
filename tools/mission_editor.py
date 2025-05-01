@@ -146,6 +146,7 @@ while run:
             writer = csv.writer(csvfile, delimiter=',')
             for row in level_data:
                 writer.writerow(row)
+
     if load_button.draw(screen):
         screen_scroll = 0
         with open(f'level{mission}_data.csv', newline='') as csvfile:
@@ -190,6 +191,7 @@ while run:
                 level_data[y][x] = selected_tile
         if pygame.mouse.get_pressed()[2] == 1:
             level_data[y][x] = -1
+            print(f"Placed tile {selected_tile} at ({x}, {y})")
 
 #================================================================================
 #event handler

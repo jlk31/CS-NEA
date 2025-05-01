@@ -17,6 +17,7 @@ class GameState:
         Args:
             level_id (int): The ID of the level to load.
         """
+
         self.level_data = []
         try:
             with open(f'level{level_id}_data.csv', newline='') as csvfile:
@@ -29,6 +30,7 @@ class GameState:
 
         self.level = Level()
         self.player = self.level.process_data(self.level_data)
+
         return True
 
     def event_handler(self, events):
