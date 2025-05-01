@@ -58,6 +58,7 @@ font = pygame.font.SysFont('Arial', 30)
 #================================================================================
 
 space_img = pygame.image.load('assets/background/space.png').convert_alpha()
+space_img = pygame.transform.scale(space_img, (WIDTH + side_margin, HEIGHT + low_margin - 100))
 
 print(f"Space image loaded: {space_img}")
 
@@ -89,6 +90,13 @@ def draw_bgd():
     width = space_img.get_width()
     for i in range(4):
         screen.blit(space_img, ((i * width) - screen_scroll, 0))
+
+    num_tiles = (COLUMN_COUNTER * TILE_MAGNITUIDE + WIDTH) // WIDTH + 1
+
+    for i in range(num_tiles):
+        screen.blit(space_img, ((i * width) - screen_scroll, 0))
+
+
 
 def draw_grid():
     for c in range(COLUMN_COUNTER + 1):
