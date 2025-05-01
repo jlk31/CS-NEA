@@ -86,6 +86,7 @@ print(f"Play button image loaded: {play_button_img}")
 quit_button_img = pygame.image.load('assets/buttons/quit_button.png').convert_alpha()
 restart_button_img = pygame.image.load('assets/buttons/restart_button.png').convert_alpha()
 space_img = pygame.image.load('assets/background/space.png').convert_alpha()
+space_img = pygame.transform.scale(space_img, (WIDTH, HEIGHT))
 
 img_list = []
 for i in range(TILE_VARIANTS):

@@ -19,7 +19,7 @@ class LoginState(BaseState):
         self.username_str = ""
 
         self.space_img = pygame.image.load("assets/background/space.png").convert_alpha()
-        self.space_img = pygame.transform.scale(self.space_img, (800, 600))
+        self.space_img = pygame.transform.scale(self.space_img, (800, 700))
 
         sign_in_img = pygame.image.load("assets/buttons/sign_in_button.png").convert_alpha()
         sign_up_img = pygame.image.load("assets/buttons/sign_up_button.png").convert_alpha()

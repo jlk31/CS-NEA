@@ -9,7 +9,7 @@ class MainMenuState(BaseState):
         self.quit_button = Button(300, 300, quit_button_img, 1)
 
         self.space_img = pygame.image.load("assets/background/space.png").convert_alpha()
-        self.space_img = pygame.transform.scale(self.space_img, (800, 600))
+        self.space_img = pygame.transform.scale(self.space_img, (800, 700))
 
         self.logo_img = pygame.image.load("assets/logo/logo.png").convert_alpha()
         self.logo_img = pygame.transform.scale(self.logo_img, (300, 150))
