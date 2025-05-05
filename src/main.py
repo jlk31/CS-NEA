@@ -56,6 +56,7 @@ COLUMN_COUNTER = 150
 level = 0
 start_game = False
 start_opening = False
+db_connection = sqlite3.connect('users.db')
 
 #================================================================================
 #draw background subroutine
@@ -783,6 +784,8 @@ while run:
     elif current_state == "game":
         state.update(moving_left, moving_right, shoot, plasma_grenade)
         state.render()
+    elif current_state == "leaderboard":
+        states["leaderboard"].load_scores()
     else:
         states[current_state].update()
         states[current_state].render()
@@ -942,4 +945,5 @@ while run:
 
         pygame.display.flip()
 
+db_connection.close()
 pygame.quit()

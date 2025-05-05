@@ -47,13 +47,16 @@ class MainMenuState(BaseState):
         if self.play_button.draw(self.screen):
             print("Play button clicked")
             return "login"
+        elif self.leaderboard_button.draw(self.screen):
+            print("Leaderboard button clicked")
+            return "leaderboard"
         if self.quit_button.draw(self.screen):
             pygame.quit()
             exit()
 
     def render(self):
         self.screen.blit(self.space_img, (0, 0))  
-        
+
         logo_x = (self.screen.get_width() - self.logo_img.get_width()) // 2
         logo_y = 50 
         self.screen.blit(self.logo_img, (logo_x, logo_y))
