@@ -10,8 +10,6 @@
 #Recursive algorithms ------------- (381), (507), (542)
 #List operations ------------------ (82), (156), (172), (176), (185), (283), (289), (291), (321), (324), (329), (468), (474), (494), (542), (544), (552)
 
-#line numbers will change as program is amended/tested/updated
-
 #===============================================================================
 #modules being imported
 #===============================================================================
@@ -65,7 +63,7 @@ start_opening = False
 def draw_bgd():
     screen.fill(BGD_COLOUR)
     WIDTH = space_img.get_width()
-    for j in range(5):  
+    for j in range(5):
         screen.blit(space_img, ((j * WIDTH) - bgd_scroll, 0))
 
 #define player action variables
@@ -257,7 +255,6 @@ class Soldier(pygame.sprite.Sprite):
         self.height = self.image.get_height()
 
     def scale_down(self, scale_factor):
-        """Scale down the player's sprite."""
         self.image = pygame.transform.scale(self.image, (int(self.width * scale_factor), int(self.height * scale_factor)))
         self.rect = self.image.get_rect(center=self.rect.center)
 
@@ -772,10 +769,16 @@ while run:
     next_state = states[current_state].event_handler(events)
 
     if next_state:
+        print(f"Switching to state: {next_state}")
         current_state = next_state
         continue
-
-    if current_state == "game":
+    
+    if current_state == "main_menu":
+        next_state = states["main_menu"].update()
+        states["main_menu"].render()
+        if next_state:
+            current_state = next_state
+    elif current_state == "game":
         state.update(moving_left, moving_right, shoot, plasma_grenade)
         state.render()
     else:

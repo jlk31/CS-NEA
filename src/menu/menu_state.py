@@ -5,8 +5,6 @@ from utils.button import Button
 class MainMenuState(BaseState):
     def __init__(self, screen, play_button_img, quit_button_img):
         super().__init__(screen)
-        self.play_button = Button(300, 200  , play_button_img, 1)
-        self.quit_button = Button(300, 300, quit_button_img, 1)
 
         self.space_img = pygame.image.load("assets/background/space.png").convert_alpha()
         self.space_img = pygame.transform.scale(self.space_img, (800, 700))

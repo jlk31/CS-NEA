@@ -1,23 +1,25 @@
 import pygame
 import csv
 import sys
+import pygame
+
+pygame.init()
+
+WIDTH = 800
+HEIGHT = int(WIDTH * 0.8)
+BGD_COLOUR = (0, 0, 0)
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+space_img = pygame.image.load('assets/background/space.png').convert_alpha()
+space_img = pygame.transform.scale(space_img, (WIDTH, HEIGHT))
 
 class GameState:
     def __init__(self, screen, level, player, level_data):
-        """Initialize the game state."""
         self.screen = screen
         self.level = level
         self.player = player
         self.level_data = level_data
 
     def load_level(self, level_id):
-        """
-        Load the specified level.
-        
-        Args:
-            level_id (int): The ID of the level to load.
-        """
-
         self.level_data = []
         try:
             with open(f'level{level_id}_data.csv', newline='') as csvfile:
@@ -34,31 +36,23 @@ class GameState:
         return True
 
     def event_handler(self, events):
-        """
-        Handle events for the game state.
-        
-        Args:
-            events (list): A list of pygame events.
-        
-        Returns:
-            str: The next state to transition to, or None to stay in the current state.
-        """
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return "main_menu"  #return to the main menu if ESC is pressed
+                    return "main_menu"
         return None
     
     def update(self, moving_left, moving_right, shoot, plasma_grenade):
-        """Update the game state."""
         self.player.update()
         self.level.draw()
         if moving_left or moving_right or shoot or plasma_grenade:
             print("Player actions are being processed")
 
     def render(self):
-        """Render the game state."""
+        screen.blit(space_img, (0, 0))
+        self.level.draw()
         self.player.draw()
+        pygame.display.flip()
