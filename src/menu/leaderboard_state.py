@@ -51,7 +51,6 @@ class LeaderboardState(BaseState):
             LIMIT 10
         """)
         self.scores = cursor.fetchall()
-        print("Loaded scores:", self.scores)
 
     def render(self):
         self.screen.blit(self.space_img, (0, 0))
