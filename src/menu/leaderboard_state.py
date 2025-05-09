@@ -5,6 +5,9 @@
 import pygame
 from menu.base_state import BaseState
 
+#===============================================================================
+#leaderboard state class
+#===============================================================================
 class LeaderboardState(BaseState):
     def __init__(self, screen, db_connection):
         super().__init__(screen)
@@ -68,18 +71,9 @@ class LeaderboardState(BaseState):
         """)
         self.scores = cursor.fetchall()
 
-    def add_test_users(self):
-        cursor = self.db_connection.cursor()
-
-        # Insert test users if the table is empty
-        cursor.execute("SELECT COUNT(*) FROM users")
-        if cursor.fetchone()[0] == 0:  # If no users exist
-            cursor.execute("INSERT INTO users (username) VALUES ('Player1')")
-            cursor.execute("INSERT INTO users (username) VALUES ('Player2')")
-            cursor.execute("INSERT INTO users (username) VALUES ('Player3')")
-            cursor.execute("INSERT INTO users (username) VALUES ('Player4')")
-            cursor.execute("INSERT INTO users (username) VALUES ('Player5')")
-            self.db_connection.commit()
+#===============================================================================
+#render method
+#===============================================================================
 
     def render(self):
         self.screen.blit(self.space_img, (0, 0))
@@ -108,8 +102,12 @@ class LeaderboardState(BaseState):
             username_text = self.font.render(username, True, (255, 255, 255))
             self.screen.blit(username_text, (200, y_offset))
 
-            star_count = high_score // 500  # 1 star for every 500 points
-            for star in range(min(star_count, 5)):  # Limit to 5 stars
+#===============================================================================
+#draw stars for every 500 points in game
+#===============================================================================
+
+            star_count = high_score // 500
+            for star in range(min(star_count, 5)):
                 star_x = 400 + star * 30
                 pygame.draw.polygon(self.screen, (255, 215, 0), [
                     (star_x, y_offset + 20),
@@ -119,6 +117,10 @@ class LeaderboardState(BaseState):
 
             score_text = self.font.render(str(high_score), True, (255, 255, 255))
             self.screen.blit(score_text, (600, y_offset))
+
+#===============================================================================
+#event handler
+#===============================================================================
 
     def event_handler(self, events):
         for event in events:
