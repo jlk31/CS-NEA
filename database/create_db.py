@@ -4,7 +4,10 @@
 
 import sqlite3
 
-# Connect to the database (it will be created if it doesn't exist)
+#===============================================================================
+#establish base connection to database
+#===============================================================================
+
 connection = sqlite3.connect('users.db')
 cursor = connection.cursor()
 
@@ -75,7 +78,9 @@ INSERT OR IGNORE INTO games (username, score, date_played, duration) VALUES
 ('user3', 300, '2023-10-03', 60)
 ''')
 
-#commit the changes and close the connection
+#===============================================================================
+#commit changes and close connection
+#===============================================================================
 
 connection.commit()
 connection.close()
