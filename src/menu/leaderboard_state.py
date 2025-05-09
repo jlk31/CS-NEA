@@ -10,7 +10,7 @@ class LeaderboardState(BaseState):
 
     def load_scores(self):
         cursor = self.db_connection.cursor()
-        cursor.execute("SELECT player_name, high_score FROM players ORDER BY high_score DESC LIMIT 10")
+        cursor.execute("SELECT username, score FROM high_scores ORDER BY score DESC LIMIT 10")
         self.scores = cursor.fetchall()
 
     def render(self):
@@ -18,7 +18,7 @@ class LeaderboardState(BaseState):
         title = self.font.render("Leaderboard", True, (255, 255, 255))
         self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 50))
 
-        # Display the scores
+        #display the scores
         for i, (player_name, high_score) in enumerate(self.scores):
             text = self.font.render(f"{i + 1}. {player_name}: {high_score}", True, (255, 255, 255))
             self.screen.blit(text, (100, 100 + i * 40))

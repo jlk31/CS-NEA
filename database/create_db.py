@@ -5,7 +5,7 @@
 import sqlite3
 
 # Connect to the database (it will be created if it doesn't exist)
-connection = sqlite3.connect('user_db.db')
+connection = sqlite3.connect('users.db')
 cursor = connection.cursor()
 
 #===============================================================================
