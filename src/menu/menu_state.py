@@ -53,6 +53,11 @@ class MainMenuState(BaseState):
         if self.quit_button.draw(self.screen):
             pygame.quit()
             exit()
+        if self.options_button.draw(self.screen):
+            print("Options button clicked")
+            return "options"
+        
+        return None
 
     def render(self):
         self.screen.blit(self.space_img, (0, 0))  

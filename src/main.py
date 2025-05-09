@@ -199,7 +199,7 @@ states = {
     "leaderboard": LeaderboardState(screen, db_connection),
 }
 
-current_state = "main_menu"
+current_state = "login"
 
 #================================================================================
 #soldier class for player and enemies
