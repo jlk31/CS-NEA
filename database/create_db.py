@@ -11,6 +11,7 @@ cursor = connection.cursor()
 #===============================================================================
 #create users table
 #===============================================================================
+
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS users (
     username TEXT PRIMARY KEY,

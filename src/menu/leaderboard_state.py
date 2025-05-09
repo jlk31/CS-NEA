@@ -1,3 +1,7 @@
+#===============================================================================
+#modules being imported
+#===============================================================================
+
 import pygame
 from menu.base_state import BaseState
 
@@ -21,6 +25,10 @@ class LeaderboardState(BaseState):
         self.bronze_medal_img = pygame.image.load("assets/medals/bronze_medal.png").convert_alpha()
         self.bronze_medal_img = pygame.transform.scale(self.bronze_medal_img, (50, 50))
 
+#===============================================================================
+#create high_scores table
+#===============================================================================
+
     def ensure_table_exists(self):
         cursor = self.db_connection.cursor()
         cursor.execute("""
@@ -31,6 +39,10 @@ class LeaderboardState(BaseState):
             )
         """)
 
+#===============================================================================
+#create users table
+#===============================================================================
+
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,6 +51,10 @@ class LeaderboardState(BaseState):
     """)
 
         self.db_connection.commit()
+
+#===============================================================================
+#create users table
+#===============================================================================
 
     def load_scores(self):
         cursor = self.db_connection.cursor()
@@ -51,6 +67,19 @@ class LeaderboardState(BaseState):
             LIMIT 10
         """)
         self.scores = cursor.fetchall()
+
+    def add_test_users(self):
+        cursor = self.db_connection.cursor()
+
+        # Insert test users if the table is empty
+        cursor.execute("SELECT COUNT(*) FROM users")
+        if cursor.fetchone()[0] == 0:  # If no users exist
+            cursor.execute("INSERT INTO users (username) VALUES ('Player1')")
+            cursor.execute("INSERT INTO users (username) VALUES ('Player2')")
+            cursor.execute("INSERT INTO users (username) VALUES ('Player3')")
+            cursor.execute("INSERT INTO users (username) VALUES ('Player4')")
+            cursor.execute("INSERT INTO users (username) VALUES ('Player5')")
+            self.db_connection.commit()
 
     def render(self):
         self.screen.blit(self.space_img, (0, 0))
