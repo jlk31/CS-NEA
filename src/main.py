@@ -786,6 +786,7 @@ while run:
         state.render()
     elif current_state == "leaderboard":
         states["leaderboard"].load_scores()
+        states["leaderboard"].render()
     else:
         states[current_state].update()
         states[current_state].render()

@@ -7,14 +7,33 @@ class LeaderboardState(BaseState):
         self.db_connection = db_connection
         self.font = pygame.font.SysFont('Arial', 30)
         self.scores = []
+        self.ensure_table_exists()
+
+    def ensure_table_exists(self):
+        cursor = self.db_connection.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS high_scores (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT NOT NULL,
+                score INTEGER NOT NULL
+            )
+        """)
+        self.db_connection.commit()
 
     def load_scores(self):
         cursor = self.db_connection.cursor()
-        cursor.execute("SELECT username, score FROM high_scores ORDER BY score DESC LIMIT 10")
+        cursor.execute("""
+            SELECT username, MAX(score) as highest_score
+            FROM high_scores
+            GROUP BY username
+            ORDER BY highest_score DESC
+            LIMIT 10
+        """)
         self.scores = cursor.fetchall()
 
     def render(self):
         self.screen.fill((0, 0, 0))
+        
         title = self.font.render("Leaderboard", True, (255, 255, 255))
         self.screen.blit(title, (self.screen.get_width() // 2 - title.get_width() // 2, 50))
 
