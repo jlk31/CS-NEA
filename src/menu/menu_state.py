@@ -1,6 +1,14 @@
+#===============================================================================
+#modules being imported
+#===============================================================================
+
 import pygame
 from menu.base_state import BaseState
 from utils.button import Button
+
+#===============================================================================
+#main menu state class
+#===============================================================================
 
 class MainMenuState(BaseState):
     def __init__(self, screen, play_button_img, quit_button_img):
@@ -24,6 +32,47 @@ class MainMenuState(BaseState):
         self.quit_button = Button(590, 240, quit_img, 1 * 0.5)
         self.options_button = Button(0, 590, options_img, 1 * 0.5)
 
+#===============================================================================
+#update method
+#===============================================================================
+
+    def update(self):
+        if self.play_button.draw(self.screen):
+            print("Play button clicked")
+            return "login"
+        elif self.leaderboard_button.draw(self.screen):
+            print("Leaderboard button clicked")
+            return "leaderboard"
+        if self.quit_button.draw(self.screen):
+            pygame.quit()
+            exit()
+        if self.options_button.draw(self.screen):
+            print("Options button clicked")
+            return "options"
+        
+        return None
+
+#===============================================================================
+#render method
+#===============================================================================
+
+    def render(self):
+        self.screen.blit(self.space_img, (0, 0))  
+
+        logo_x = (self.screen.get_width() - self.logo_img.get_width()) // 2
+        logo_y = 50 
+        self.screen.blit(self.logo_img, (logo_x, logo_y))
+
+        self.play_button.draw(self.screen)
+        self.learn_button.draw(self.screen)
+        self.leaderboard_button.draw(self.screen)
+        self.quit_button.draw(self.screen)
+        self.options_button.draw(self.screen)
+
+#===============================================================================
+#event handler
+#===============================================================================
+
     def event_handler(self, events):
         for event in events:
             if event.type == pygame.QUIT:
@@ -43,32 +92,3 @@ class MainMenuState(BaseState):
             exit()
         if self.options_button.draw(self.screen):
             print("Options button clicked")
-
-    def update(self):
-        if self.play_button.draw(self.screen):
-            print("Play button clicked")
-            return "login"
-        elif self.leaderboard_button.draw(self.screen):
-            print("Leaderboard button clicked")
-            return "leaderboard"
-        if self.quit_button.draw(self.screen):
-            pygame.quit()
-            exit()
-        if self.options_button.draw(self.screen):
-            print("Options button clicked")
-            return "options"
-        
-        return None
-
-    def render(self):
-        self.screen.blit(self.space_img, (0, 0))  
-
-        logo_x = (self.screen.get_width() - self.logo_img.get_width()) // 2
-        logo_y = 50 
-        self.screen.blit(self.logo_img, (logo_x, logo_y))
-
-        self.play_button.draw(self.screen)
-        self.learn_button.draw(self.screen)
-        self.leaderboard_button.draw(self.screen)
-        self.quit_button.draw(self.screen)
-        self.options_button.draw(self.screen)
