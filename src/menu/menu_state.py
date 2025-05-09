@@ -37,6 +37,7 @@ class MainMenuState(BaseState):
             print("Learn button clicked")
         if self.leaderboard_button.draw(self.screen):
             print("Leaderboard button clicked")
+            return "leaderboard"
         if self.quit_button.draw(self.screen):
             pygame.quit()
             exit()
