@@ -57,6 +57,7 @@ level = 0
 start_game = False
 start_opening = False
 db_connection = sqlite3.connect('users.db')
+username = ""
 
 #================================================================================
 #draw background subroutine
@@ -199,7 +200,7 @@ states = {
     "leaderboard": LeaderboardState(screen, db_connection),
 }
 
-current_state = "main_menu"
+current_state = "login"
 
 #================================================================================
 #soldier class for player and enemies
@@ -776,7 +777,9 @@ while run:
         current_state = next_state
         continue
     
-    if current_state == "main_menu":
+    if current_state == "main_menu" and isinstance(states["login"], LoginState):
+        username = states["login"].get_username()
+        states["main_menu"].username = username
         next_state = states["main_menu"].update()
         states["main_menu"].render()
         if next_state:

@@ -29,6 +29,9 @@ class LoginState(BaseState):
 
         self.active_field = "username"
 
+    def get_username(self):
+        return ''.join(self.username)
+
 #================================================================================
 #event handler for login state
 #================================================================================
