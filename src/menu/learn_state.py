@@ -20,7 +20,7 @@ class LearnState(BaseState):
 #================================================================================
 
     def render(self):
-        self.screen.fill((0, 0, 50))  # Set background color
+        self.screen.fill((0, 0, 0))
         text_surface = self.font.render(self.text, True, (255, 255, 255))
         self.screen.blit(text_surface, (50, 200))
 
@@ -31,5 +31,5 @@ class LearnState(BaseState):
     def event_handler(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                return "main_menu"  # Return to main menu
+                return "main_menu"
         return None

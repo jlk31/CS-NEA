@@ -202,7 +202,7 @@ states = {
     "learn": LearnState(screen),
 }
 
-current_state = "login"
+current_state = "main_menu"
 
 #================================================================================
 #soldier class for player and enemies
