@@ -102,3 +102,4 @@ class MainMenuState(BaseState):
             exit()
         if self.options_button.draw(self.screen):
             print("Options button clicked")
+            return "options"

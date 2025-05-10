@@ -27,6 +27,7 @@ from menu.menu_state import MainMenuState
 from menu.game_state import GameState
 from menu.leaderboard_state import LeaderboardState#
 from menu.learn_state import LearnState
+from menu.options_state import OptionsState
 
 #================================================================================
 #main game parameters
@@ -59,6 +60,7 @@ start_game = False
 start_opening = False
 db_connection = sqlite3.connect('users.db')
 username = ""
+password = ""
 
 #================================================================================
 #draw background subroutine
@@ -200,6 +202,7 @@ states = {
     "game": GameState(screen, None, None, None),
     "leaderboard": LeaderboardState(screen, db_connection),
     "learn": LearnState(screen),
+    "options": OptionsState(screen, username, password)
 }
 
 current_state = "main_menu"
@@ -782,8 +785,8 @@ while run:
     if current_state == "main_menu" and isinstance(states["login"], LoginState):
         username = states["login"].get_username()
         states["main_menu"].username = username
-        next_state = states["main_menu"].update()
         states["main_menu"].render()
+        next_state = states["main_menu"].update()
         if next_state:
             current_state = next_state
     elif current_state == "game":
@@ -792,6 +795,13 @@ while run:
     elif current_state == "leaderboard":
         states["leaderboard"].load_scores()
         states["leaderboard"].render()
+    elif current_state == "learn":
+        states["learn"].render()
+    elif current_state == "options":
+        states["options"].render()
+        next_state = states["options"].update()
+        if next_state:
+            current_state = next_state
     else:
         states[current_state].update()
         states[current_state].render()
