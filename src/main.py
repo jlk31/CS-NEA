@@ -756,7 +756,7 @@ player = level.process_data(level_data)
 
 states["game"] = GameState(screen, level, player, level_data)
 
-if load_mission(0):  # Assuming mission number 0
+if load_mission(0):
     print("Mission loaded successfully!")
 else:
     print("Failed to load mission!")
@@ -820,7 +820,7 @@ while run:
                 enemy.update()
                 enemy.draw()
 
-        if load_mission(0):  # Assuming mission number 0
+        if load_mission(0):
             print("Mission loaded successfully!")
         else:
             print("Failed to load mission!")
