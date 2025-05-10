@@ -25,7 +25,8 @@ from menu.base_state import BaseState
 from menu.login_state import LoginState
 from menu.menu_state import MainMenuState
 from menu.game_state import GameState
-from menu.leaderboard_state import LeaderboardState
+from menu.leaderboard_state import LeaderboardState#
+from menu.learn_state import LearnState
 
 #================================================================================
 #main game parameters
@@ -198,6 +199,7 @@ states = {
     "main_menu": MainMenuState(screen, play_button_img, quit_button_img, username),
     "game": GameState(screen, None, None, None),
     "leaderboard": LeaderboardState(screen, db_connection),
+    "learn": LearnState(screen),
 }
 
 current_state = "login"
