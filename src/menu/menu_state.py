@@ -11,7 +11,7 @@ from utils.button import Button
 #===============================================================================
 
 class MainMenuState(BaseState):
-    def __init__(self, screen, play_button_img, quit_button_img):
+    def __init__(self, screen, play_button_img, quit_button_img, username):
         super().__init__(screen)
 
         self.space_img = pygame.image.load("assets/background/space.png").convert_alpha()
@@ -31,6 +31,8 @@ class MainMenuState(BaseState):
         self.leaderboard_button = Button(590, 170, leaderboard_img, 1 * 0.5)
         self.quit_button = Button(590, 240, quit_img, 1 * 0.5)
         self.options_button = Button(0, 590, options_img, 1 * 0.5)
+
+        self.username = username
 
 #===============================================================================
 #update method
@@ -68,6 +70,10 @@ class MainMenuState(BaseState):
         self.leaderboard_button.draw(self.screen)
         self.quit_button.draw(self.screen)
         self.options_button.draw(self.screen)
+
+        font = pygame.font.SysFont('Arial', 30)
+        username_text = font.render(f"Logged in as: {self.username}", True, (255, 255, 255))
+        self.screen.blit(username_text, (10, 10))
 
 #===============================================================================
 #event handler

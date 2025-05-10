@@ -194,7 +194,7 @@ restart_button = Button(300, 400, restart_button_img, 1)
 
 states = {
     "login": LoginState(screen),
-    "main_menu": MainMenuState(screen, play_button_img, quit_button_img),
+    "main_menu": MainMenuState(screen, play_button_img, quit_button_img, username),
     "game": GameState(screen, None, None, None),
     "leaderboard": LeaderboardState(screen, db_connection),
 }
