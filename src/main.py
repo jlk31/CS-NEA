@@ -2,13 +2,12 @@
 #https://www.aqa.org.uk/subjects/computer-science/a-level/computer-science-7517/specification/non-exam-assessment-administration
 
 #Non-SQL table access ------------- (539)
-#Dictionary defined --------------- (95)
-#Generation of objects(OOP) ------- (138), (318), (349), (383), (413), (464)
-#Simple user defined algorithms --- (63), (115), (122), (199), (499)
-#Writing and reading from files --- (499), (541)
-#Simple OOP model ----------------- (138), (318), (349), (383), (413), (464)
-#Recursive algorithms ------------- (381), (507), (542)
-#List operations ------------------ (82), (156), (172), (176), (185), (283), (289), (291), (321), (324), (329), (468), (474), (494), (542), (544), (552)
+#Dictionary defined --------------- (113, 366)
+#Generation of objects(OOP) ------- (318), (464), (541), (552), (622), (678), (744)
+#Simple user defined algorithms --- (185), (507), (542), (678), (781)
+#Writing and reading from files --- (170), (185), (810)
+#Simple OOP model ----------------- (366), (499), (552), (781), (800), (803), (810)
+#List operations ------------------ (113), (366), (507), (541), (678), (781)
 
 #===============================================================================
 #modules being imported
