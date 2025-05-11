@@ -25,6 +25,12 @@ class OptionsState(BaseState):
         self.instructions_x = (self.screen.get_width() - self.instructions_img.get_width()) // 2
         self.instructions_y = (self.screen.get_height() - self.instructions_img.get_height()) // 2
 
+    def get_username(self):
+        return self.username
+    
+    def get_password(self):
+        return self.password
+    
 #================================================================================
 #render method
 #================================================================================

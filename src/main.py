@@ -799,9 +799,8 @@ while run:
         states["learn"].render()
     elif current_state == "options":
         states["options"].render()
-        next_state = states["options"].update()
-        if next_state:
-            current_state = next_state
+        username = states["options"].get_username()
+        password = states["options"].get_password()
     else:
         states[current_state].update()
         states[current_state].render()
