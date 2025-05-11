@@ -28,9 +28,12 @@ class LoginState(BaseState):
         self.sign_up_button = Button(325, 450, sign_up_img, 1 * 0.5)
 
         self.active_field = "username"
-
+    
     def get_username(self):
-        return ''.join(self.username)
+        return self.username
+    
+    def get_password(self):
+        return self.password
 
 #================================================================================
 #event handler for login state

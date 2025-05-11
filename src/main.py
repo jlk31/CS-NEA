@@ -205,7 +205,7 @@ states = {
     "options": OptionsState(screen, username, password)
 }
 
-current_state = "main_menu"
+current_state = "login"
 
 #================================================================================
 #soldier class for player and enemies

@@ -5,6 +5,9 @@
 import pygame
 from menu.base_state import BaseState
 
+username = ""
+password = ""
+
 #================================================================================
 #options state class
 #================================================================================
@@ -27,7 +30,7 @@ class OptionsState(BaseState):
 #================================================================================
 
     def render(self):
-            self.screen.fill((50, 50, 50))
+            self.screen.fill((0, 0, 0))
             username_text = self.font.render(f"Username: {self.username}", True, (255, 255, 255))
             password_text = self.font.render(f"Password: {self.password}", True, (255, 255, 255))
 
